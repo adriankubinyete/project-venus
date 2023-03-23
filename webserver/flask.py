@@ -1,10 +1,16 @@
 from flask import Flask, redirect, url_for
+from utilidade.venutils import sha1, lerArquivo, venLog
+
+log = venLog()
 
 # devo fazer isso em classe, provavelmente...
 
 class VenusWS:
-    def __init__(self):
+    def __init__(self, database_client):
+        log.info(f"Iniciando FLASK APP")
         self.app = self.start_Flask()
+        log.info(f"Setando o cliente DB")
+        self.database = database_client
         
     def start_Flask(self):
         app = Flask(__name__)
