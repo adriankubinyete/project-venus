@@ -1,4 +1,8 @@
 secret/
-log*.txt
 log*
 logs/
+__pycache__/
+.log
+pip-log.txt
+pip-delete-this-directory.txt
+*.py[cod]

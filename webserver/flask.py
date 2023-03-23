@@ -1,9 +1,8 @@
 from flask import Flask, redirect, url_for
 from utilidade.venutils import sha1, lerArquivo, venLog
 
-log = venLog()
 
-# devo fazer isso em classe, provavelmente...
+log = venLog()
 
 class VenusWS:
     def __init__(self, database_client):

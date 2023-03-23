@@ -3,6 +3,7 @@ from webserver.flask import VenusWS
 from utilidade.venutils import sha1, lerArquivo, venLog
 import asyncio
 
+
 def main():
     log = venLog()
     log.info("INICIANDO")

@@ -1,6 +1,7 @@
 from utilidade.venutils import sha1, lerArquivo, venLog
 import mysql.connector as mysql
 
+
 log = venLog()
 
 class VenusDB:
