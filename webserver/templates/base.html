@@ -8,6 +8,14 @@
 </head>
 <body>
     <h1>Venus</h1>
+    <!-- Caso tenha alguma mensagem, exibe como <p> -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
 </body>

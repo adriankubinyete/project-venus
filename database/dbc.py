@@ -14,17 +14,31 @@ class VenusDB:
         self.sql=mysql.connect(host=self.db_host, user=self.db_user, password=self.db_pass, database=self.db_database)
 
     def validateLogin(self, username:str, password:str):
-        print(f"validateLogin: user = {username}")
-        print(f"validateLogin: pass = {password}")
+        #print(f"validateLogin: user = {username}")
+        #print(f"validateLogin: pass = {password}")
         c = self.sql.cursor()
-        c.execute(f"SELECT id FROM users WHERE username = '{username}' AND password = '{password}'")
-        userId = c.fetchone() # Seta userId pro que a query retornar
-        if(userId != None): # Se tiver conteúdo (Query retornou >0 resultados)
-            for row in userId: 
-                userId = userId[0] # Lê todas as linhas (obrigatório pra limpar o cursor), mas retorna o primeiro valor
-            return userId
+        c.execute(f"SELECT token FROM users WHERE username = '{username}' AND password = '{password}'")
+        token = c.fetchone() # Seta userId pro que a query retornar
+        if(token != None): # Se tiver conteúdo (Query retornou >0 resultados)
+            for row in token: 
+                token = token[0] # Lê todas as linhas (obrigatório pra limpar o cursor), mas retorna o primeiro valor
+            return token
         else: 
-            return userId # UserID está vazio, esse usuário não existe no DB.
+            return token # UserID está vazio, esse usuário não existe no DB.
+        
+    def adminPrivileges(self, token:str):
+        c = self.sql.cursor()
+        c.execute(f"SELECT superuser FROM users WHERE token = '{token}'")
+        superuser = c.fetchone()
+        if(superuser != None):
+            for row in superuser:
+                superuser = superuser[0]
+            if superuser == 1:
+                return True
+            else:
+                return False
+        else:
+            return False
         
         
         

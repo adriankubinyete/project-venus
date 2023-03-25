@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 from utilidade.venutils import sha1, lerArquivo#, venlog
 from datetime import timedelta
 
@@ -17,14 +17,31 @@ class VenusWS:
         app = Flask(__name__)
         app.secret_key = lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True)
         app.permanent_session_lifetime = timedelta(hours=8)
-
+        userToken = None
+        
+        # Checo se já tem uma sessão existente. Caso tenha, atribuo o token da lógica ao token que está vivo
         def checkSession():
-            if 'id' in session: # Se houver uma sessão, mostro a página (usuário logado)
+            nonlocal userToken
+            if 'token' in session: # Se houver uma sessão, mostro a página (usuário logado)
+                userToken = session['token']
                 return True
             else:
                 return False
 
-        @app.route("/") # Diz pro flask que ao acessar "/" é pra rodar esta função.
+        def checkAdminPrivileges():
+            nonlocal userToken
+            if self.venusdb.adminPrivileges(userToken):
+                return True
+            else:
+                return False
+            
+
+
+
+
+
+
+        @app.route("/") 
         def home():
             return redirect(url_for("user_homepage"))
 
@@ -32,51 +49,58 @@ class VenusWS:
         # Página inicial do usuário
         @app.route("/homepage/")
         def user_homepage():
-            if not checkSession(): # se não existir uma sessão, envia pra login
+            if not checkSession(): # Não está LOGADO
                 return redirect(url_for("login"))
                 
             return render_template("index.html")
 
+        # Página de login + lógica
         @app.route('/login/', methods=['GET', 'POST'] )
         def login():
+            nonlocal userToken
             if request.method == "POST": # Se for um POST
                 username = request.form['inputUsername'] # Usuário
-                password = sha1(request.form['inputPassword']) # Senha
-                userId = self.venusdb.validateLogin(username, password) # uso o cliente do db
-                if (userId != None):
-                    # checo se usuario e senha está correto
-                    # tupla no DB onde fica registrada todas informações do usuário
-                    
-                    # retorna essa tupla inteira como uma lista/dic e usa isso como 'global user_session'
-                    # retorna as informações da conta (db)
-                    session['id'] = userId # criando uma sessão pra esse usuário
+                password = sha1(request.form['inputPassword']) # Senha encriptada
+                userToken = self.venusdb.validateLogin(username, password) # Uso a classe de banco de dados, método validateLogin()
+                if (userToken != None):
+                    session['token'] = userToken # Inicio a sessão
                     session.permanent=True
+                    flash("Login bem sucedido!", "info")
                     return redirect(url_for('user_homepage'))
                 else:
-                    print("LOGIN INVÁLIDO")  
+                    flash("Login inválido!", "info") 
                     return render_template('login.html')          
             else: # É um GET
-                if 'id' in session: # Já tem um token de sessão
-                    return redirect(url_for('user_homepage'))
+                if checkSession(): # Já está logado
+                    return redirect(url_for("user_homepage"))
                 
-                else: # Não tem um token de sessão, precisa logar-se
-                    return render_template('login.html')
-        
+                
+                return render_template('login.html')
         
         
         @app.route('/logout/')
         def logout():
-            if 'id' in session: # Há um token na sessão
-                session.pop('id', None) # Removo o token
-                return redirect(url_for('login')) # Envio para página de login
-            else:
-                return redirect(url_for('login')) # Não está logado, vai para login.
+            if not checkSession(): # Não está LOGADO
+                return redirect(url_for("login"))
+
+            # Está logado, logo, encerro a sessão.
+            session.pop('token', None) # Removo o token
+            flash("Deslogado com sucesso!", "info")
+            return redirect(url_for('login')) # Envio para página de login
+
         
         @app.route("/admin/")
-        def admin():
-            # envia para a url /<nome>, e seta nome para "Admin!". o keyword passado deve bater o mesmo nome
-            # de argumento que está configurado /<name>
-            return redirect(url_for("user", name="Admin!"))
+        def admin():      
+            if not checkSession(): # Não está LOGADO
+                return redirect(url_for("login"))
+            if not checkAdminPrivileges(): # Está logado, mas não é ADMIN
+                flash("Você não tem permissão para acessar esta página.", "info")
+                return redirect(url_for('user_homepage'))
+            
+            
+            return render_template("admin.html") 
+
+
 
         # ideia tipo @app.route("/login")
         # @app.route("/home/central/<id-card>/<acao>"), 
