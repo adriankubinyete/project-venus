@@ -1,16 +1,16 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
-from utilidade.venutils import sha1, lerArquivo#, venlog
+from utilidade.venutils import sha1, lerArquivo, venLog
 from datetime import timedelta
 
-#log = venLog()
+log = venLog()
 
 class VenusWS:
     def __init__(self, database):
 
-        #log.info(f"Setando o cliente DB")
+        log.info(f"Setando o cliente DB")
         self.venusdb = database # quando quero usar os métodos de VenusDB, ações / querys automaticas
         self.database = database.sql # conexão mysql, para fazer ações / querys manuais
-        #log.info(f"Iniciando FLASK APP")
+        log.info(f"Iniciando FLASK APP")
         self.app = self.start_flask()
         
     def start_flask(self):
@@ -77,7 +77,10 @@ class VenusWS:
                     
                     # JOGAR UM DICIONÁRIO DO USER_CONFIG NESSA SESSION.TOKEN
                     session['token'] = user_session.token # Inicio a sessão
-                    session.permanent=True
+                    if request.form.get('lembrar'): # Se marcou para lembrar sua sessão (limite 8h = expediente)
+                        session.permanent=True
+                    else:
+                        session.permanent=False
                     flash("Login bem sucedido!", "info")
                     return redirect(url_for('user_homepage'))
                 else:
@@ -120,5 +123,7 @@ class VenusWS:
 
             return render_template("admin.html") 
 
-
+        @app.route("/navbar/")
+        def navbar():
+            return render_template("navbar.html")
         return app

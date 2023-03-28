@@ -15,7 +15,7 @@ def lerArquivo(path:str, encrypt_sha1:bool=False):
             return str(f.readline())
         
 def venLog():
-    LOG_FILE = f"logfile-{datetime.now().strftime('%d-%m-%y')}.log"
+    LOG_FILE = f"utilidade/logfile-{datetime.now().strftime('%d-%m-%y')}.log"
     logging.basicConfig(
         filename=LOG_FILE,
         level=logging.DEBUG,
