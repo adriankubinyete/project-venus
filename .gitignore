@@ -1,6 +1,6 @@
 secret/
-log*
 logs/
+logfile*
 __pycache__/
 .log
 pip-log.txt
