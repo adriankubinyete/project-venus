@@ -125,5 +125,5 @@ class VenusWS:
 
         @app.route("/navbar/")
         def navbar():
-            return render_template("navbar.html")
+            return render_template("navbar-raw.html")
         return app
