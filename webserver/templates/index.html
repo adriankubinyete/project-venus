@@ -8,39 +8,57 @@
     <title>Home</title>
 </head>
 <body>
-    <div class="topnav">
-        <div class="topnav-left main-logo">
-            <a href="/login/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
-        </div>
-        <div class="topnav-content">
-            <p>imagine algo legal aqui</p>
-        </div>
-        <div class="topnav-right">
-            <a href="/logout/">Deslogar</a>
-        </div>
-    </div>
-    <div class="main-content">
+    <main>
         <div class="sidenav">
 
             <div class="sidenav-top">
-                <a class="sidenav-item" href="/homepage/">Home</a>
+
+                <a class="main-logo" href="/login/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
+
             </div>
             
             <div class="sidenav-content">
-                <a class="sidenav-item" href="#">Content 1</a>
-                <a class="sidenav-item" href="#">Content 2</a>
-                <a class="sidenav-item" href="#">Content 3</a>
+
+                <div><a class="sidenav-item" href="#">tópico 1</a></div>
+
+                <div><a class="sidenav-item" href="#">tópico 2</a></div>
+                
+                <div><a class="sidenav-item" href="#">tópico 3</a></div>
+                
+
             </div>
     
             <div class="sidenav-footer">
-                <a class="sidenav-item" href="/admin/">Painel Admin</a>
-                <a class="sidenav-item-logout" href="/logout/">Log out</a>
+                <div id="admin">
+                    <ion-icon id="admin-icon" name="shield-half-outline"></ion-icon>
+                    <a id="admin-item" class="sidenav-item sidenav-admin" href="/admin/">Painel Admin</a>
+                </div>
+
+                
+
+                <div id="logout">
+                    <ion-icon id="logout-icon" name="exit-outline"></ion-icon>
+                    <a id="logout-item" class="sidenav-item" href="/logout/">Log out</a>
+                </div>
+
             </div>
     
         </div>
         <div class="conteudo">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet fugit harum voluptate explicabo cumque assumenda recusandae repellat pariatur ipsa velit, nulla deleniti maxime debitis nemo molestiae optio? Dolorum, voluptatibus nemo?</p>
         </div>
-    </div>
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div id="flash-snack">{{msg}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </main>
+    
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

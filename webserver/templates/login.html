@@ -15,7 +15,7 @@
         <div class="form-box">
             <div class="form-value">
                 <form action="" method="POST">
-                    <h2>Venus</h2>
+                    <a class="main-logo" href="/login/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
                         <input type="text" name="inputUsername" required>
@@ -40,19 +40,21 @@
                     
                     <button>Log in</button>
 
-                    <div class="flashMessages">
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                {% for msg in messages %}
-                                    <p>{{msg}}</p>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                    </div>
                 </form>
+                
             </div>
         </div>
         
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div id="flash-snack">{{msg}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
     </section>
 
 

@@ -16,16 +16,93 @@ section {
     background-size: cover;
 }
 
-.flashMessages {
-    margin-top: 5px;
+#flash-messages #flash-snack {
+    visibility: hidden;
+    /* Hidden by default. Visible on click */
+    min-width: 250px;
+    /* Set a default minimum width */
+    margin-left: -125px;
+    /* Divide value of min-width by 2 */
+    background-color: #333;
+    /* Black background color */
+    color: #fff;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 2px;
+    /* Rounded borders */
+    padding: 16px;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 1;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
+    bottom: 30px;
+    /* 30px from the bottom */
 }
 
-.flashMessages p {
-    color: red;
-    font-weight: bolder;
-    text-align: center;
-    border-radius: 20px;
-    padding: 10 35px;
+#flash-snack.show {
+    /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 1s, fadeout 1s 1s;
+    animation: fadein 1s, fadeout 1s 1s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        visibility: hidden;
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        visibility: hidden;
+        bottom: 0;
+        opacity: 0;
+    }
 }
 
 .form-box {
@@ -41,10 +118,14 @@ section {
     align-items: center;
 }
 
-h2 {
+.main-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 2em;
     color: white;
     text-align: center;
+    filter: brightness(100);
 }
 
 .inputbox {
@@ -65,8 +146,8 @@ h2 {
     transition: .5s;
 }
 
-input:focus ~ label,
-input:valid ~ label {
+input:focus~label,
+input:valid~label {
     top: -5px;
 }
 
@@ -86,7 +167,7 @@ input:valid ~ label {
     right: 8px;
     color: white;
     font-size: 1.2em;
-    top: 20px;    
+    top: 20px;
 }
 
 .forget {

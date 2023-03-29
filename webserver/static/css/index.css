@@ -1,131 +1,38 @@
+:root {
+    --primarycolor: #ca47fd;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
 
-body {
-    height: 100vh;
-    width: 100%;
-    max-height: 100vh;
+main {
     display: flex;
-    flex-direction: column;
-    background: url('https://images.unsplash.com/photo-1499988921418-b7df40ff03f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+    height: 100vh;
+    width: 100vw;
+    background: url('https://images.unsplash.com/photo-1511300636408-a63a89df3482?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
     background-position: center;
     background-size: cover;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.topnav {
-    height: 50px;
-    background: rgba(0, 0, 0, 0.5);
-    background-position: top;
-    background-size: cover;
-    /* border-style: solid; */
-    border-color: white;
-    /* border-width: 5px 0px; */
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-}
-
-.topnav p {
-    text-align: center;
-    color: white;
-}
-
-.main-logo {
-    display: block;
-    text-align: center;
-}
-
-.main-logo a img {
-    filter: invert(1);
-    width: auto;
-    height: 100%;
-}
-
-.topnav-left {
-    width: 180px;
-    margin-right: auto;
-    align-content: center;
-    background: transparent;
-    backdrop-filter: blur(5px);
-    height: 3em;
-    left: 0;
-}
-
-.topnav-content {
-    flex-grow: 10;
-    background: transparent;
-    backdrop-filter: blur(5px);
-    height: 3em;
-}
-
-.topnav-right {
-    transition: 0.25s;
-    /* logout */
-    width: 100px;
-    position: relative;
-    margin-left: auto;
-    background: rgba(255, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-    height: 3em;
-    right: 0;
-
-}
-
-.topnav-right:hover {
-    transition: 0.5s;
-    width: 90px;
-    background-color: white;
-    border-bottom-left-radius: 15px;
-    border-top-left-radius: 15px;
-}
-
-.topnav-right a {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    bottom: 0px;
-    transform: translateY(-50%);
-    transition-duration: 0.25s;
-    display: block;
-    color: white;
-    text-decoration: none;
-    text-align: center;
-}
-
-.topnav-right a:hover {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    transition-duration: 0.5s;
-    color: red
-
-}
-
-.main-content {
-    display: flex;
-    height: 100vh;
 }
 
 .sidenav {
-    max-height: 100vh;
-    width: 180px;
-    padding: 0px 10px;
     position: relative;
-    z-index: 9999;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
+    width: 14em;
+    height: 100%;
+    z-index: 9999;
+    padding: 0px 1em;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
     overflow-x: hidden;
     overflow-y: scroll;
     -ms-overflow-style: none; /* Esconder scroll, Edge */
     scrollbar-width: none; /* Esconder scroll, Firefox */
     display: flex;
     flex-direction: column;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .sidenav::-webkit-scrollbar {
@@ -133,15 +40,18 @@ body {
 }
 
 .sidenav-top {
-    position: relative;
-    padding: 10px 0px 0px 0px;
-    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 0px 0px;
+    filter: brightness(100);
 }
 
 .sidenav-content {
     position: relative;
     margin: 10px 0px;
     background-color: transparent;
+    color: white;
 }
 
 .sidenav-footer {
@@ -151,36 +61,43 @@ body {
     margin-top: auto;
     background-color: transparent;
     position: relative;
+    color: white;
+
 }
 
-.sidenav .sidenav-item {
+.sidenav-item {
     transition-duration: 0.4s; /* transição quando o item perde o hover */
     -webkit-transition-duration: 0.4s; /* Safari */
-
     border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
-    color: white;
     display: block;
+    color: inherit;
 }
 
-.sidenav .sidenav-item:hover {
+.sidenav-item:hover {
     transition-duration: 0.6s; /* transição para os efeitos do hover */
     transform: translateX(10px);
-
     border-radius: 25px;
     border-width: 1px;
-
-    /* border: solid rgba(183, 154, 252, 0.5); */
-    /* background-color: rgba(250, 188, 250, 0.1); */
-    color: #9b00f5;
+    color: var(--primarycolor); /* COR PRIMÁRIA */
 }
 
-.sidenav .sidenav-item-logout {
+
+#logout {
+    display: flex;
+    align-items: center;
+}
+
+#logout-icon {
+    width: 20px;
+    height: 20px;
+}
+
+#logout-item {
     transition-duration: 0.4s; /* mudei e nao sei pra q serve */
     -webkit-transition-duration: 0.4s; /* Safari */
-
     border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
@@ -189,22 +106,146 @@ body {
     display: block;
 }
 
-.sidenav .sidenav-item-logout:hover {
+#logout-item:hover {
     transition-duration: 0.6s;
     transform: translateX(10px);
-
     border-radius: 25px;
     border-width: 1px;
-
-    /* border: solid rgba(253, 33, 88, 0.5); */
-    /* background-color: rgba(255, 115, 134, 0.1); */
     color: rgba(255, 0, 0, 0.7);
 }
 
+#admin {
+    display: flex;
+    align-items: center;
+}
+
+#admin-icon {
+    width: 20px;
+    height: 20px;
+}
+
+#admin-item {
+    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
+    -webkit-transition-duration: 0.4s; /* Safari */
+    border-radius: 25px; /* se deixar sem fica maneiro tbm */
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+}
+
+#admin-item:hover {
+    transition-duration: 0.6s;
+    transform: translateX(10px);
+    border-radius: 25px;
+    border-width: 1px;
+    color: rgba(0, 255, 55, 0.7);
+}
+
+#flash-messages #flash-snack {
+    visibility: hidden;
+    /* Hidden by default. Visible on click */
+    min-width: 250px;
+    /* Set a default minimum width */
+    margin-left: -125px;
+    /* Divide value of min-width by 2 */
+    background-color: #333;
+    /* Black background color */
+    color: #fff;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 2px;
+    /* Rounded borders */
+    padding: 16px;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 99999;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
+    bottom: 30px;
+    /* 30px from the bottom */
+}
+
+#flash-snack.show {
+    z-index: 99999;
+    /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 1s, fadeout 1s 1s;
+    animation: fadein 1s, fadeout 1s 1s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        visibility: hidden;
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        visibility: visible;
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        visibility: hidden;
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .conteudo {
-    position: relative;
-    width: 100%;
-    padding: 10px 10px 0px 0px;
-    padding-left: 10px;
-    backdrop-filter: blur(5px);
+    padding: 10px 0px 0px 10px;
+    backdrop-filter: blur(2px);
 }
