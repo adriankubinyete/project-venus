@@ -3,41 +3,122 @@
     padding: 0;
 }
 
-.tudo {
+body {
+    height: 100vh;
+    width: 100%;
+    max-height: 100vh;
     display: flex;
+    flex-direction: column;
+    background: url('https://images.unsplash.com/photo-1499988921418-b7df40ff03f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+    background-position: center;
+    background-size: cover;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.topnav {
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    background-position: top;
+    background-size: cover;
+    /* border-style: solid; */
+    border-color: white;
+    /* border-width: 5px 0px; */
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.topnav p {
+    text-align: center;
+    color: white;
+}
+
+.main-logo {
+    display: block;
+    text-align: center;
+}
+
+.main-logo a img {
+    filter: invert(1);
+    width: auto;
+    height: 100%;
+}
+
+.topnav-left {
+    width: 180px;
+    margin-right: auto;
+    align-content: center;
+    background: transparent;
+    backdrop-filter: blur(5px);
+    height: 3em;
+    left: 0;
+}
+
+.topnav-content {
+    flex-grow: 10;
+    background: transparent;
+    backdrop-filter: blur(5px);
+    height: 3em;
+}
+
+.topnav-right {
+    flex-grow: 5;
+    margin-left: auto;
+    background: transparent;
+    backdrop-filter: blur(5px);
+    height: 3em;
+    right: 0;
+}
+
+.main-content {
+    display: flex;
+    height: 100vh;
 }
 
 .sidenav {
     max-height: 100vh;
-    width: 160px;
+    width: 180px;
+    padding: 0px 10px;
     position: relative;
     z-index: 9999;
     top: 0;
     left: 0;
-    background-color: black;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
     overflow-x: hidden;
     overflow-y: scroll;
+    -ms-overflow-style: none; /* Esconder scroll, Edge */
+    scrollbar-width: none; /* Esconder scroll, Firefox */
     display: flex;
     flex-direction: column;
 }
 
+.sidenav::-webkit-scrollbar {
+    display: none; /* Esconder scroll, Chrome*/
+}
+
 .sidenav-top {
-    background: red;
+    padding: 10px 0px 0px 0px;
+    background-color: transparent;
 }
 
 .sidenav-content {
     margin: 10px 0px;
-    background: green;
+    background-color: transparent;
 }
 
 .sidenav-footer {
     width: 100%;
-    bottom: 0px;
-    background: blue;
+    margin-top: auto;
+    background-color: transparent;
     position: relative;
 }
 
 .sidenav a {
+    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
+    -webkit-transition-duration: 0.4s; /* Safari */
+
+    border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
@@ -46,11 +127,30 @@
 }
 
 .sidenav a:hover {
-    color: rgb(186, 247, 247);
+    transition-duration: 0.6s;
+
+    border-radius: 25px;
+    padding: 6px 6px 6px 16px;
+    border: solid rgba(183, 154, 252, 0.5);
+    border-width: 1px;
+    background-color: rgba(250, 188, 250, 0.1);
+    color: rgb(219, 157, 243);
+}
+
+.sidenav a:after {
+    content: "";
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 5s;
+    box-shadow: 0 0 10px 40px white;
 }
 
 .conteudo {
     position: relative;
-    height: auto;
-    margin-left: 10px;
+    width: 100%;
+    padding: 10px 10px 0px 0px;
+    padding-left: 10px;
+    backdrop-filter: blur(5px);
 }
