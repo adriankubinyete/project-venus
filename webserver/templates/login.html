@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V - Login</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+</head>
+<body>
+    <!-- FLASHED MESSAGES -->
+    
+    <!-- CONTEÚDO -->
+    <section>
+        <div class="form-box">
+            <div class="form-value">
+                <form action="" method="POST">
+                    <h2>Venus</h2>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input type="text" name="inputUsername" required>
+                        <label for="">Usuário</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" name="inputPassword" required>
+                        <label for="">Senha</label>
+                    </div>
+                    <div class="forget">
+
+                        <label class="lembrar" for="">
+                            <input type="checkbox" name="lembrar">Lembrar-me 
+                        </label>
+
+                        <label class="esqueci" for="">
+                            <a href="#">Esqueci minha senha</a>
+                        </label>
+
+                    </div>
+                    
+                    <button>Log in</button>
+
+                    <div class="flashMessages">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for msg in messages %}
+                                    <p>{{msg}}</p>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </section>
+
+
+
+
+
+
+
+    <!-- <div class="formLogin">
+        <form action="#" method="post">
+            <label class="labelUsername">Usuário:
+                <input type="text" name="inputUsername" required>
+            </label>
+            <label class="labelSenha">Senha:
+                <input type="text" name="inputPassword" required"">
+            </label>
+            <label>
+                <input type="submit" value="Log-in">
+            </label>
+        </form>
+    </div> -->
+    
+    <!-- LINKS -->
+    
+    <!-- <a href="/logout/"> Logout </a> <br>
+    <a href="/"> Home </a> <br>
+    <a href="/admin/"> Admin </a> <br>
+    <a href="/login/"> Login </a> <br> -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+<script src="{{url_for('static', filename='js/login.js')}}"></script>
+</html>
