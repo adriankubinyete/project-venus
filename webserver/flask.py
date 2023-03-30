@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
+from functools import wraps
 from utilidade.venutils import sha1, lerArquivo, venLog
 from datetime import timedelta
 
@@ -50,6 +51,13 @@ class VenusWS:
         def getSessionInfo(token:str):
             return self.venusdb.getSessionInfo(token)
             
+        def login_required(f): # apenas uma função teste para ser usada como template aqui
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                if session.get('username') is None or session.get('if_logged') is None:
+                    return redirect('/login',code=302)
+                return f(*args, **kwargs)
+            return decorated_function
 
         @app.route("/") 
         def home():
