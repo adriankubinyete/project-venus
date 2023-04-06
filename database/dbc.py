@@ -62,6 +62,10 @@ class VenusDB:
             "token": session_tuple[4],
         }
         
+    def getOrgsForUser(self, token:str):
+        pass
+        
+        
         
         
 

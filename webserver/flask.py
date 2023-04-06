@@ -14,6 +14,10 @@ class VenusWS:
         log.info(f"Iniciando FLASK APP")
         self.app = self.start_flask()
         
+    def get_orgs_for_session(self, token):
+        self.database 
+        pass    
+    
     def start_flask(self):
         class SessionManager:
             def __init__(self, session, db, token, info):
@@ -70,6 +74,7 @@ class VenusWS:
             if not checkSession(): # Não está LOGADO
                 return redirect(url_for("login"))
                 
+            
                 
             return render_template("index.html")
 
@@ -131,7 +136,7 @@ class VenusWS:
 
             return render_template("admin.html") 
 
-        @app.route("/navbar/")
+        @app.route("/dev/")
         def navbar():
-            return render_template("navbar-raw.html")
+            return render_template("dev.html")
         return app

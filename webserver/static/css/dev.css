@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: url("https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+    background-position: center;
+    background-size: cover;
+}
+
+.fakenav {
+    width: 10px;
+    height: 100%;
+    z-index: 50;
+    background: blue;
+}
+
+section {
+    width: 100%;
+    height: 100%;
+}
+
+.clickable-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    text-decoration: none;
+    color: black;
+    font-size: 26px;
+}
+
+.row {
+    display: flex;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: rgba(165, 209, 245, 0.199);
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    transition: 0.3s;
+}
+
+.row:hover {
+    background: rgba(0, 0, 0, 0.158);
+    color: rgb(255, 255, 255);
+    border-left: 3px solid rgb(0, 255, 0);
+    border-right: 3px solid rgb(0, 255, 0);
+}
+
+.campo {
+    display: flex;
+    flex-grow: 1;
+    margin: 10px auto;
+    justify-content: center;
+    height: auto;
+    font-size: 16px;
+}
+
+.row .pop-icons {
+    color: white;
+    display: flex;
+    position: absolute;
+    font-size: 26px;
+    right: 0px;
+    height: 100%; /* pra que centralizar né */
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-75%) translateY(8%);
+
+    transition: 0.6s;
+    opacity: -1;
+}
+
+.row:hover > .pop-icons {
+    opacity: 1;
+    transform: translateX(-25%) translateY(8%);
+}
+
+
+.org-use-icon {
+    color: white;
+    transition: 0.3s;
+}
+.org-use-icon:hover {
+    color: green;
+}
+
+
+.org-del-icon {
+    color:white;
+    transition: 0.3s;
+}
+.org-del-icon:hover {
+    color: red;
+}
