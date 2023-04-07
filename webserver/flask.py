@@ -13,10 +13,6 @@ class VenusWS:
         self.database = database.sql # conexão mysql, para fazer ações / querys manuais
         log.info(f"Iniciando FLASK APP")
         self.app = self.start_flask()
-        
-    def get_orgs_for_session(self, token):
-        self.database 
-        pass    
     
     def start_flask(self):
         class SessionManager:
@@ -40,7 +36,9 @@ class VenusWS:
                     return True
                 else:
                     return False
-                         
+                
+            def get_orgs_for_session(self):
+                self.venusdb.getInstancesForOrg([self.info['organization_id']])
             
         app = Flask(__name__)
         app.secret_key = lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True)
@@ -74,7 +72,8 @@ class VenusWS:
             if not checkSession(): # Não está LOGADO
                 return redirect(url_for("login"))
                 
-            
+            # TESTE INSTÂNCIAS
+            user_session.get_orgs_for_session()
                 
             return render_template("index.html")
 
@@ -133,7 +132,6 @@ class VenusWS:
                 flash("Você não tem permissão para acessar esta página.", "info")
                 return redirect(url_for('user_homepage'))
             
-
             return render_template("admin.html") 
 
         @app.route("/dev/")

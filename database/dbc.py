@@ -60,10 +60,33 @@ class VenusDB:
             "email": session_tuple[2],
             "superuser": bool(session_tuple[3]),
             "token": session_tuple[4],
+            "organization_id" : session_tuple[5],
         }
         
-    def getOrgsForUser(self, token:str):
-        pass
+    def getInstancesForOrg(self, org:list):
+        def unpackList(list): 
+            ret = ''
+            for i in range(0, len(list)):
+                # se for o ultimo item, adiciono sem ","
+                if i == len(list)-1:
+                    ret+=f'{list[i]}'
+                # se não for o ultimo item, adiciono com ","
+                else:
+                    ret+=f'{list[i]}, '
+            return ret
+        # Transforma list [1, 2, 3, 4] em string "1, 2, 3, 4"
+        
+        # SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ()
+        c = self.sql.cursor()
+        log.debug(f"Obtendo instâncias para a organização '{org}'")
+        c.execute(f"SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ({unpackList(org)})")
+        instancias = c.fetchall()
+        qt_instancias = len(instancias)
+        log.debug(f"Quantidade de resultados: {qt_instancias}")
+        log.debug(f"Instâncias obtidas: {instancias}")
+        print(instancias)
+        return instancias
+
         
         
         
