@@ -61,9 +61,10 @@ class VenusDB:
             "superuser": bool(session_tuple[3]),
             "token": session_tuple[4],
             "organization_id" : session_tuple[5],
+            "instances" : None, # utilizado para display dos cards de host
         }
         
-    def getInstancesForOrg(self, org:list):
+    def getInstancesForOrg(self, org:list, admin:bool=False):
         def unpackList(list): 
             ret = ''
             for i in range(0, len(list)):
@@ -79,12 +80,14 @@ class VenusDB:
         # SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ()
         c = self.sql.cursor()
         log.debug(f"Obtendo instâncias para a organização '{org}'")
-        c.execute(f"SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ({unpackList(org)})")
+        if admin:
+            c.execute(f"SELECT id, instance, host, dns FROM organization_info")
+        else:
+            c.execute(f"SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ({unpackList(org)})")
         instancias = c.fetchall()
         qt_instancias = len(instancias)
         log.debug(f"Quantidade de resultados: {qt_instancias}")
         log.debug(f"Instâncias obtidas: {instancias}")
-        print(instancias)
         return instancias
 
         

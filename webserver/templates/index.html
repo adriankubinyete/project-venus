@@ -57,11 +57,11 @@
                                 </div>
                 
                                 <div class="campo campo-host">
-                                    <label class="label-host" for="">{{card[2]}}</label>
+                                    <label class="label-host" for="">{% if card[2] %}{{card[2]}}{% else %}N/A{% endif %}</label>
                                 </div>
                 
                                 <div class="campo campo-dns">
-                                    <label class="label-dns" for="">{{card[3]}}</label>
+                                    <label class="label-dns" for="">{% if card[3] %}{{card[3]}}{% else %}N/A{% endif %}</label>
                                 </div>
                 
                                 <div class="pop-icons">

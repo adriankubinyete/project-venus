@@ -1,5 +1,8 @@
 :root {
-    --primarycolor: #ca47fd;
+    
+    --color-primary: rgb(197, 109, 248);
+
+    --color-secondary: #118bee;
 }
 
 * {
@@ -68,7 +71,6 @@ main {
 .sidenav-item {
     transition-duration: 0.4s; /* transição quando o item perde o hover */
     -webkit-transition-duration: 0.4s; /* Safari */
-    border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
@@ -81,7 +83,7 @@ main {
     transform: translateX(10px);
     border-radius: 25px;
     border-width: 1px;
-    color: var(--primarycolor); /* COR PRIMÁRIA */
+    color: var(--color-primary); /* COR PRIMÁRIA */
 }
 
 
@@ -98,7 +100,6 @@ main {
 #logout-item {
     transition-duration: 0.4s; /* mudei e nao sei pra q serve */
     -webkit-transition-duration: 0.4s; /* Safari */
-    border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
@@ -127,7 +128,6 @@ main {
 #admin-item {
     transition-duration: 0.4s; /* mudei e nao sei pra q serve */
     -webkit-transition-duration: 0.4s; /* Safari */
-    border-radius: 25px; /* se deixar sem fica maneiro tbm */
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
@@ -246,6 +246,7 @@ main {
 
 
 .conteudo {
+    width: 100%;
     padding: 10px 10px 0px 10px;
     backdrop-filter: blur(2px);
 }
@@ -253,14 +254,15 @@ main {
 /* CARD LIST STYLING */
 
 .clickable-row {
+    color: black;
     margin: 1px 0px 1px 0px;
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-around;
     text-decoration: none;
-    color: black;
     font-size: 26px;
+    transition: 0.6s;
 }
 
 .row {
@@ -276,14 +278,20 @@ main {
 
 .row:hover {
     background: rgba(0, 0, 0, 0.158);
-    color: rgb(255, 255, 255);
-    border-left: 3px solid rgb(0, 255, 0);
-    border-right: 3px solid rgb(0, 255, 0);
+    border-left: 3px solid var(--color-secondary);
+    border-right: 3px solid var(--color-secondary);
+}
+
+.row:hover .clickable-row {
+    color: rgb(194, 194, 194);
+    transform: translateX(8px);
 }
 
 .campo {
     display: flex;
-    flex-grow: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 15em;
     margin: 10px auto;
     justify-content: center;
     height: auto;
@@ -291,7 +299,6 @@ main {
 }
 
 .row .pop-icons {
-    color: white;
     display: flex;
     position: absolute;
     font-size: 26px;
@@ -312,16 +319,16 @@ main {
 
 
 .org-use-icon {
-    color: white;
+    color: rgba(0, 0, 0, 0.75);
     transition: 0.3s;
 }
 .org-use-icon:hover {
-    color: green;
+    color: greenyellow;
 }
 
 
 .org-del-icon {
-    color:white;
+    color: rgba(0, 0, 0, 0.75);
     transition: 0.3s;
 }
 .org-del-icon:hover {

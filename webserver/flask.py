@@ -21,12 +21,22 @@ class VenusWS:
                 self.venusdb = db
                 self.token = token
                 self.info = info
-            
+                
+            def userIsAdmin(self):
+                if not self.info['superuser']:
+                    return False
+                else:
+                    return True
+
             def validate_login(self, user, passwd):
                 self.token = self.venusdb.validateLogin(user, passwd)
                 
             def get_session_info(self):
                 self.info = self.venusdb.getSessionInfo(self.token)
+                
+                print("PRINTANDO SELF.INFO DENTRO DE GET_SESSION_INFO")
+                for k, v in self.info.items():
+                    print(f"{k} = {v}")
 
             def validate_session(self):
                 if 'token' in self.session:
@@ -38,17 +48,23 @@ class VenusWS:
                     return False
                 
             def get_orgs_for_session(self):
-                # fazer uma lógica de 
-                # if not self.info['display_orgs']: # (não tem orgs pra dar display)
-                #   self.venusdb.getInstancesForOrg([self.info['organization_id']])
-                # else:
-                #   pass ?
-                return self.venusdb.getInstancesForOrg([self.info['organization_id']])
+                print(f"############## DEBUGGING ###########")
+                if self.userIsAdmin():
+                    pass
                 
-            # ideia: fazer algo tipo session_update(self), que atualiza todas informações (se não tiver, puxa do banco, se tiver, não faz nada)
-            # as informações a receberem update, seria basicamente todo o session.info
-            
-            # pensando em reestruturar esse código do session manager, pensar em algo mais conciso, refatorar / ver se dá pra melhorar alguma coisa no session manager, tendo em mente que sempre que acessa um site, tem que validar informações
+                if not self.info['instances']:
+                    print("NÃO TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO ATUAL, PEGANDO NOVAS DO BANCO DE DADOS")
+                    if self.userIsAdmin():
+                        print("Usuário é ADMIN, retornando todas instâncias")
+                        self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True))
+                    else:
+                        print(f"O usuário não é ADMIN, retornando apenas instâncias da org {self.info['organization_id']}")
+                        self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']]))
+                else:
+                    print("JÁ TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO, NÃO FOI NECESSÁRIO CONSULTAR O BANCO")
+                # aqui, já tem os cards que deve exibir em self.info['instances']
+                print(f"Retornando {self.info['instances']}")
+                return self.info["instances"]
             
         app = Flask(__name__)
         app.secret_key = lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True)
