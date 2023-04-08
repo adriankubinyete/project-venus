@@ -45,6 +45,39 @@
     
         </div>
         <div class="conteudo">
+            <div class="card-list">
+                {% if cardlist %}
+                    <!-- (2, 'Nox Net', '168.195.164.2', None) -->
+                    {% for card in cardlist %}
+                        <a class="clickable-row" href="">
+                            <div class="row">
+                
+                                <div class="campo campo-nome">
+                                    <label class="label-nome" for="">{{card[1]}}</label>
+                                </div>
+                
+                                <div class="campo campo-host">
+                                    <label class="label-host" for="">{{card[2]}}</label>
+                                </div>
+                
+                                <div class="campo campo-dns">
+                                    <label class="label-dns" for="">{{card[3]}}</label>
+                                </div>
+                
+                                <div class="pop-icons">
+                                    <a class="org-use-icon" href="/admin/">
+                                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                                    </a>
+                                    <a class="org-del-icon" href="/index/">
+                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet fugit harum voluptate explicabo cumque assumenda recusandae repellat pariatur ipsa velit, nulla deleniti maxime debitis nemo molestiae optio? Dolorum, voluptatibus nemo?</p>
         </div>
         <div id="flash-messages">

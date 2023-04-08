@@ -38,7 +38,17 @@ class VenusWS:
                     return False
                 
             def get_orgs_for_session(self):
-                self.venusdb.getInstancesForOrg([self.info['organization_id']])
+                # fazer uma lógica de 
+                # if not self.info['display_orgs']: # (não tem orgs pra dar display)
+                #   self.venusdb.getInstancesForOrg([self.info['organization_id']])
+                # else:
+                #   pass ?
+                return self.venusdb.getInstancesForOrg([self.info['organization_id']])
+                
+            # ideia: fazer algo tipo session_update(self), que atualiza todas informações (se não tiver, puxa do banco, se tiver, não faz nada)
+            # as informações a receberem update, seria basicamente todo o session.info
+            
+            # pensando em reestruturar esse código do session manager, pensar em algo mais conciso, refatorar / ver se dá pra melhorar alguma coisa no session manager, tendo em mente que sempre que acessa um site, tem que validar informações
             
         app = Flask(__name__)
         app.secret_key = lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True)
@@ -46,9 +56,26 @@ class VenusWS:
         user_session=SessionManager(session, self.venusdb, None, None)
         user_session.token = None
         user_session.info = None
-        
-        def checkSession():
+       
+        @app.context_processor # Utility para poder printar dentro do JINJA2 > mdebug('msg'/var)
+        def utility_functions():
+            def print_in_console(message):
+                print(str(message))
+            return dict(mdebug=print_in_console)
+       
+        def render_cards_template(template_name, **kwargs):
+            card_list = user_session.get_orgs_for_session()
+            #print(f"Card list in render_cards_template: {card_list}") # debug
+            return render_template(template_name, cardlist=card_list, **kwargs)
+                
+        def userHasSession():
             return user_session.validate_session()
+        
+        def userIsAdmin():
+            if not user_session.info['superuser']:
+                return False
+            else:
+                return True
             
         def getSessionInfo(token:str):
             return self.venusdb.getSessionInfo(token)
@@ -69,13 +96,12 @@ class VenusWS:
         # Página inicial do usuário
         @app.route("/homepage/")
         def user_homepage():
-            if not checkSession(): # Não está LOGADO
+            if not userHasSession(): # Não está LOGADO
                 return redirect(url_for("login"))
                 
-            # TESTE INSTÂNCIAS
-            user_session.get_orgs_for_session()
-                
-            return render_template("index.html")
+            # Isso daqui faz uma requisição ao banco. O ideal seria, em user_session.get_orgs_for_session(), eu fazer uma consulta se essas informações já estão na sessão. se já estiver, utilizo-as. caso não esteja, puxo do banco e adiciono na sessão, na parte user_session.info['display_orgs'], caso contrário toda vez que acessar homepage vai ter uma sessão gerada
+            
+            return render_cards_template("index.html")
 
 
         # Página de login + lógica
@@ -99,7 +125,7 @@ class VenusWS:
                     flash("Login inválido!", "info") 
                     return render_template('login.html')          
             else: # É um GET
-                if checkSession(): # Já está logado
+                if userHasSession(): # Já está logado
                     return redirect(url_for("user_homepage"))
                 
                 
@@ -108,7 +134,7 @@ class VenusWS:
         
         @app.route('/logout/')
         def logout():
-            if not checkSession(): # Não está LOGADO
+            if not userHasSession(): # Não está LOGADO
                 return redirect(url_for("login"))
 
 
@@ -119,16 +145,16 @@ class VenusWS:
             user_session.session.pop('info', None)
             user_session.token=None
             user_session.info=None
-            #user_session.token, user_session.info = None # Removo as informações da sessão (não preciso disso por causa do checkSession)
+            #user_session.token, user_session.info = None # Removo as informações da sessão (não preciso disso por causa do userHasSession)
             flash("Deslogado com sucesso!", "info")
             return redirect(url_for('login')) # Envio para página de login
 
         
         @app.route("/admin/")
         def admin():      
-            if not checkSession(): # Não está LOGADO
+            if not userHasSession(): # Não está LOGADO
                 return redirect(url_for("login"))
-            if not user_session.info['superuser']: # Está logado, tem sessão, mas não é ADMIN
+            if not userIsAdmin(): # Está logado, tem sessão, mas não é ADMIN
                 flash("Você não tem permissão para acessar esta página.", "info")
                 return redirect(url_for('user_homepage'))
             
