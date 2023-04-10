@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/instance.css')}}">
+    <title>Home</title>
+</head>
+
+<body>
+    <canvas>
+    </canvas>
+    <main>
+        <div class="sidenav">
+
+            <div class="sidenav-top">
+
+                <a class="main-logo" href="/login/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
+
+            </div>
+            
+            <div class="sidenav-content">
+
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">Instância</a>
+                </div>
+
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
+                </div>
+
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
+                </div>
+
+                <!-- dupe -->
+
+                <!-- fim dupe -->
+
+            </div>
+    
+            <div class="sidenav-footer">
+                {% if userIsAdmin %} <!-- JINJA: Usuário é administrador. -->
+                <div id="dev">
+                    <ion-icon id="dev-icon" name="code-slash-outline"></ion-icon>
+                    <a id="dev-item" class="sidenav-item" href="/dev/">Em Progresso</a>
+                </div>
+                <div id="admin">
+                    <ion-icon id="admin-icon" name="shield-half-outline"></ion-icon>
+                    <a id="admin-item" class="sidenav-item" href="/admin/">Painel Admin</a>
+                </div>
+                {% endif %} <!-- - -->
+                <div id="logout">
+                    <ion-icon id="logout-icon" name="exit-outline"></ion-icon>
+                    <a id="logout-item" class="sidenav-item" href="/logout/">Sair</a>
+                </div>
+
+            </div>
+    
+        </div>
+        <div class="conteudo">
+
+            <!-- Formulário para atualizar as informações iniciais da empresa. -->
+            <div class="org-form-box">
+                <div class="org-form-value">
+                    <form action="" method="post">
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputUsername" required>
+                            <label for="">Instance</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">Host</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">Dns</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">SSH Port</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">SSH User</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">SSH Password</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="information-outline"></ion-icon>
+                            <input type="text" name="inputPassword" required>
+                            <label for="">SSH Private Key</label>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div id="flash-snack">{{msg}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </main>
+    
+<script>
+    // Initialising the canvas
+    var canvas = document.querySelector('canvas'),
+        ctx = canvas.getContext('2d');
+    
+    // Setting the width and height of the canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Setting up the letters
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZ';
+    letters = letters.split('');
+    
+    // Setting up the columns
+    var fontSize = 10,
+        columns = canvas.width / fontSize;
+    
+    // Setting up the drops
+    var drops = [];
+    for (var i = 0; i < columns; i++) {
+      drops[i] = 1;
+    }
+    
+    // Setting up the draw function
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < drops.length; i++) {
+        var text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillStyle = '#0f0';
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        drops[i]++;
+        if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
+          drops[i] = 0;
+        }
+      }
+    }
+    
+    // Loop the animation
+    setInterval(draw, 33);
+</script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

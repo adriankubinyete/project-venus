@@ -19,26 +19,41 @@
             
             <div class="sidenav-content">
 
-                <div><a class="sidenav-item" href="#">tópico 1</a></div>
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">Instância</a>
+                </div>
 
-                <div><a class="sidenav-item" href="#">tópico 2</a></div>
-                
-                <div><a class="sidenav-item" href="#">tópico 3</a></div>
-                
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
+                </div>
+
+                <div id="instances">
+                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
+                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
+                </div>
+
+                <!-- dupe -->
+
+                <!-- fim dupe -->
 
             </div>
     
             <div class="sidenav-footer">
+                {% if userIsAdmin %} <!-- JINJA: Usuário é administrador. -->
+                <div id="dev">
+                    <ion-icon id="dev-icon" name="code-slash-outline"></ion-icon>
+                    <a id="dev-item" class="sidenav-item" href="/dev/">Em Progresso</a>
+                </div>
                 <div id="admin">
                     <ion-icon id="admin-icon" name="shield-half-outline"></ion-icon>
-                    <a id="admin-item" class="sidenav-item sidenav-admin" href="/admin/">Painel Admin</a>
+                    <a id="admin-item" class="sidenav-item" href="/admin/">Painel Admin</a>
                 </div>
-
-                
-
+                {% endif %} <!-- - -->
                 <div id="logout">
                     <ion-icon id="logout-icon" name="exit-outline"></ion-icon>
-                    <a id="logout-item" class="sidenav-item" href="/logout/">Log out</a>
+                    <a id="logout-item" class="sidenav-item" href="/logout/">Sair</a>
                 </div>
 
             </div>
@@ -47,9 +62,9 @@
         <div class="conteudo">
             <div class="card-list">
                 {% if cardlist %}
-                    <!-- (2, 'Nox Net', '168.195.164.2', None) -->
+                    <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
                     {% for card in cardlist %}
-                        <a class="clickable-row" href="">
+                        <a class="clickable-row" href="{{ '/instance/%s'%card[0] }}">
                             <div class="row">
                 
                                 <div class="campo campo-nome">

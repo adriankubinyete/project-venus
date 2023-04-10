@@ -33,10 +33,6 @@ class VenusWS:
                 
             def get_session_info(self):
                 self.info = self.venusdb.getSessionInfo(self.token)
-                
-                print("PRINTANDO SELF.INFO DENTRO DE GET_SESSION_INFO")
-                for k, v in self.info.items():
-                    print(f"{k} = {v}")
 
             def validate_session(self):
                 if 'token' in self.session:
@@ -48,23 +44,32 @@ class VenusWS:
                     return False
                 
             def get_orgs_for_session(self):
-                print(f"############## DEBUGGING ###########")
-                if self.userIsAdmin():
-                    pass
+                print(f"Obtendo as instâncias a serem exibidas na lista de cards, para o usuário \"{self.info['screen_name']}\".")
+               
+                # // @ Adrian - A lógica a baixo faz a verificação de administrador + registra a instância em self.info['instances']. Estarei comentando esta parte do código e implementando outra forma de devolver as instâncias, a fim de manter a página web sempre 100% coerente com o banco de dados, o que implica em, caso seja feito um spam-reload da página home após login, pode sobrecarregar o banco de dados.
+                # Futuramente, é interessante pensar em alguma forma de 'queue-ar' as requisições ao banco de dados, enviá-las, e guardar em um json para ser lido, ou algo desse tipo, sem bater diretamente no banco de dados.
+                 
+                # if not self.info['instances']:
+                #     print("NÃO TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO ATUAL, PEGANDO NOVAS DO BANCO DE DADOS")
+                #     if self.userIsAdmin():
+                #         print("Usuário é ADMIN, retornando todas instâncias")
+                #         self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True))
+                #     else:
+                #         print(f"O usuário não é ADMIN, retornando apenas instâncias da org {self.info['organization_id']}")
+                #         self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']]))
+                # else:
+                #     print("JÁ TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO, NÃO FOI NECESSÁRIO CONSULTAR O BANCO")
+                # # aqui, já tem os cards que deve exibir em self.info['instances']
+                # print(f"Retornando {self.info['instances']}")
+                # return self.info["instances"]
                 
-                if not self.info['instances']:
-                    print("NÃO TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO ATUAL, PEGANDO NOVAS DO BANCO DE DADOS")
-                    if self.userIsAdmin():
-                        print("Usuário é ADMIN, retornando todas instâncias")
-                        self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True))
-                    else:
-                        print(f"O usuário não é ADMIN, retornando apenas instâncias da org {self.info['organization_id']}")
-                        self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']]))
+                if self.userIsAdmin():
+                    print("-debug- É Admin.")
+                    return self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
                 else:
-                    print("JÁ TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO, NÃO FOI NECESSÁRIO CONSULTAR O BANCO")
-                # aqui, já tem os cards que deve exibir em self.info['instances']
-                print(f"Retornando {self.info['instances']}")
-                return self.info["instances"]
+                    print("-debug- Não é admin.")
+                    return self.venusdb.getInstancesForOrg([self.info['organization_id']]) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
+        
             
         app = Flask(__name__)
         app.secret_key = lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True)
@@ -117,8 +122,17 @@ class VenusWS:
                 
             # Isso daqui faz uma requisição ao banco. O ideal seria, em user_session.get_orgs_for_session(), eu fazer uma consulta se essas informações já estão na sessão. se já estiver, utilizo-as. caso não esteja, puxo do banco e adiciono na sessão, na parte user_session.info['display_orgs'], caso contrário toda vez que acessar homepage vai ter uma sessão gerada
             
-            return render_cards_template("index.html")
+            return render_cards_template("index.html", userIsAdmin=user_session.userIsAdmin())
 
+        @app.route("/instance/<id>/", methods=['GET'])
+        def instance(id):
+            if not userHasSession():
+                flash("Você precisa estar logado para acessar esta página!", "info")
+                return redirect(url_for("login"))
+            
+            host_id = id
+            
+            return render_template("instance.html", userIsAdmin=user_session.userIsAdmin())
 
         # Página de login + lógica
         @app.route('/login/', methods=['GET', 'POST'] )

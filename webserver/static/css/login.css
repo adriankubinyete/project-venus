@@ -193,6 +193,7 @@ input:valid~label {
 }
 
 button {
+    transition: 1s;
     width: 100%;
     height: 40px;
     border-radius: 40px;
@@ -202,4 +203,10 @@ button {
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
+    border: 1px solid white;
+}
+
+button:hover {
+    transition: 0.2s;
+    color: rgb(100, 165, 106);
 }
