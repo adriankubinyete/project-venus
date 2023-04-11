@@ -46,7 +46,7 @@ class VenusWS:
             def get_orgs_for_session(self):
                 print(f"Obtendo as instâncias a serem exibidas na lista de cards, para o usuário \"{self.info['screen_name']}\".")
                 
-                if self.userIsAdmin():
+                if lambda self: False if not self.info['superuser'] else True:
                     print("-debug- É Admin.")
                     self.info['valid_cards'] = self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True)
                     return self.info['valid_cards']
@@ -117,8 +117,7 @@ class VenusWS:
             
             return render_template("index.html", 
                                    cardlist=user_session.get_orgs_for_session(), # sempre que atualizo a página, requisito o banco de dados
-                                   userIsAdmin=lambda user_session: False if not user_session.info['superuser'] else True
-                                   )
+                                   userIsAdmin=user_session.userIsAdmin())
 
 
         @app.route("/instance/<id>/", methods=['GET'])
