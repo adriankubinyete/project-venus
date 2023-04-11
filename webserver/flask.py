@@ -45,30 +45,15 @@ class VenusWS:
                 
             def get_orgs_for_session(self):
                 print(f"Obtendo as instâncias a serem exibidas na lista de cards, para o usuário \"{self.info['screen_name']}\".")
-               
-                # // @ Adrian - A lógica a baixo faz a verificação de administrador + registra a instância em self.info['instances']. Estarei comentando esta parte do código e implementando outra forma de devolver as instâncias, a fim de manter a página web sempre 100% coerente com o banco de dados, o que implica em, caso seja feito um spam-reload da página home após login, pode sobrecarregar o banco de dados.
-                # Futuramente, é interessante pensar em alguma forma de 'queue-ar' as requisições ao banco de dados, enviá-las, e guardar em um json para ser lido, ou algo desse tipo, sem bater diretamente no banco de dados.
-                 
-                # if not self.info['instances']:
-                #     print("NÃO TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO ATUAL, PEGANDO NOVAS DO BANCO DE DADOS")
-                #     if self.userIsAdmin():
-                #         print("Usuário é ADMIN, retornando todas instâncias")
-                #         self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True))
-                #     else:
-                #         print(f"O usuário não é ADMIN, retornando apenas instâncias da org {self.info['organization_id']}")
-                #         self.info['instances'] = (self.venusdb.getInstancesForOrg([self.info['organization_id']]))
-                # else:
-                #     print("JÁ TEM AS INFORMAÇÕES REGISTRADAS NA SESSÃO, NÃO FOI NECESSÁRIO CONSULTAR O BANCO")
-                # # aqui, já tem os cards que deve exibir em self.info['instances']
-                # print(f"Retornando {self.info['instances']}")
-                # return self.info["instances"]
                 
                 if self.userIsAdmin():
                     print("-debug- É Admin.")
-                    return self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
+                    self.info['valid_cards'] = self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True)
+                    return self.info['valid_cards']
                 else:
                     print("-debug- Não é admin.")
-                    return self.venusdb.getInstancesForOrg([self.info['organization_id']]) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
+                    self.info['valid_cards'] = self.venusdb.getInstancesForOrg([self.info['organization_id']]) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
+                    return self.info['valid_cards'] # Atualiza sempre que faz a requisição ao banco. Usado para definir permissões de cards ao tentar acessar via URL, um card que não estiver nessa lista retornará uma página inválida (Não pode acessar este card)
         
             
         app = Flask(__name__)
@@ -83,56 +68,66 @@ class VenusWS:
             def print_in_console(message):
                 print(str(message))
             return dict(mdebug=print_in_console)
-       
-        def render_cards_template(template_name, **kwargs):
-            card_list = user_session.get_orgs_for_session()
-            #print(f"Card list in render_cards_template: {card_list}") # debug
-            return render_template(template_name, cardlist=card_list, **kwargs)
-                
-        def userHasSession():
-            return user_session.validate_session()
         
-        def userIsAdmin():
-            if not user_session.info['superuser']:
-                return False
-            else:
-                return True
             
-        def getSessionInfo(token:str):
-            return self.venusdb.getSessionInfo(token)
-            
-        def login_required(f): # apenas uma função teste para ser usada como template aqui
+        def login_required(f): # Precisa estar LOGADO
             @wraps(f)
             def decorated_function(*args, **kwargs):
-                if session.get('username') is None or session.get('if_logged') is None:
-                    return redirect('/login',code=302)
+                if not user_session.validate_session():
+                    print(f"route [{f.__name__}]: login_required: user IS NOT logged in")
+                    flash("Você precisa estar logado para acessar esta página!", "info")
+                    return redirect(url_for("login"))
+                print(f"route [{f.__name__}]: login_required: user IS logged in")
+                return f(*args, **kwargs)
+            return decorated_function
+        
+        def superuser_required(f): # Precisa estar LOGADO, e ser um SUPERUSER
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                if not user_session.validate_session():
+                    print(f"route [{f.__name__}]: superuser_required: user IS NOT logged in")
+                    flash("Você precisa estar logado para acessar esta página!", "info")
+                    return redirect(url_for("login"))
+                print(f"route [{f.__name__}]: superuser_required: user IS logged in")
+                if not user_session.info['superuser']:
+                    # não é admin
+                    print(f"route [{f.__name__}]: superuser_required: user IS NOT admin")
+                    flash("Você não tem permissão para acessar esta página.", "info")
+                    return redirect(url_for('user_homepage'))
+                # é admin
+                print(f"route [{f.__name__}]: superuser_required: user IS admin")
                 return f(*args, **kwargs)
             return decorated_function
 
+
         @app.route("/") 
+        @login_required
         def home():
             return redirect(url_for("user_homepage"))
 
 
         # Página inicial do usuário
         @app.route("/homepage/")
+        @login_required
         def user_homepage():
-            if not userHasSession(): # Não está LOGADO
-                return redirect(url_for("login"))
                 
             # Isso daqui faz uma requisição ao banco. O ideal seria, em user_session.get_orgs_for_session(), eu fazer uma consulta se essas informações já estão na sessão. se já estiver, utilizo-as. caso não esteja, puxo do banco e adiciono na sessão, na parte user_session.info['display_orgs'], caso contrário toda vez que acessar homepage vai ter uma sessão gerada
             
-            return render_cards_template("index.html", userIsAdmin=user_session.userIsAdmin())
+            # Não funciona, pois ao fazer alteração no banco com uma sessão gerada, as atualizações do banco não passariam pra sessão, fazendo ter um usuário 'de-sincronizado' com o sistema...
+            
+            return render_template("index.html", 
+                                   cardlist=user_session.get_orgs_for_session(), # sempre que atualizo a página, requisito o banco de dados
+                                   userIsAdmin=lambda user_session: False if not user_session.info['superuser'] else True
+                                   )
+
 
         @app.route("/instance/<id>/", methods=['GET'])
-        def instance(id):
-            if not userHasSession():
-                flash("Você precisa estar logado para acessar esta página!", "info")
-                return redirect(url_for("login"))
-            
+        @login_required
+        def instance(id):            
             host_id = id
             
             return render_template("instance.html", userIsAdmin=user_session.userIsAdmin())
+
 
         # Página de login + lógica
         @app.route('/login/', methods=['GET', 'POST'] )
@@ -155,19 +150,17 @@ class VenusWS:
                     flash("Login inválido!", "info") 
                     return render_template('login.html')          
             else: # É um GET
-                if userHasSession(): # Já está logado
+                if user_session.validate_session(): # Já está logado
                     return redirect(url_for("user_homepage"))
                 
                 
                 return render_template('login.html')
-        
+
         
         @app.route('/logout/')
+        @login_required
         def logout():
-            if not userHasSession(): # Não está LOGADO
-                return redirect(url_for("login"))
-
-
+            
             # Está logado, logo, encerro a sessão.
             session.pop('token', None) # Removo o token
             session.pop('info', None)
@@ -178,19 +171,18 @@ class VenusWS:
             #user_session.token, user_session.info = None # Removo as informações da sessão (não preciso disso por causa do userHasSession)
             flash("Deslogado com sucesso!", "info")
             return redirect(url_for('login')) # Envio para página de login
-
+        
         
         @app.route("/admin/")
+        @superuser_required # só pode ser chamado se tiver passado pelo login_required
         def admin():      
-            if not userHasSession(): # Não está LOGADO
-                return redirect(url_for("login"))
-            if not userIsAdmin(): # Está logado, tem sessão, mas não é ADMIN
-                flash("Você não tem permissão para acessar esta página.", "info")
-                return redirect(url_for('user_homepage'))
             
             return render_template("admin.html") 
+
 
         @app.route("/dev/")
         def navbar():
             return render_template("dev.html")
+        
+
         return app

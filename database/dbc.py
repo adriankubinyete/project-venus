@@ -47,23 +47,6 @@ class VenusDB:
             log.debug(f"T:{token}, SUPERUSER: False")
             return False
         
-        # Aumentar/ajustar este item caso adicione novos campos no banco de dados.
-    def getSessionInfo(self, token:str):
-        c = self.sql.cursor()
-        log.debug(f"Obtendo informações para sessão do token '{token}'")
-        c.execute(f"SELECT * FROM user_config WHERE token = '{token}'")
-        session_tuple = c.fetchall()[0]
-        log.debug(f"Sessão obtida: {session_tuple}")
-        return {
-            "id": session_tuple[0],
-            "screen_name": session_tuple[1],
-            "email": session_tuple[2],
-            "superuser": bool(session_tuple[3]),
-            "token": session_tuple[4],
-            "organization_id" : session_tuple[5],
-            "instances" : None, # utilizado para display dos cards de host
-        }
-        
     def getInstancesForOrg(self, org:list, admin:bool=False):
         def unpackList(list): 
             ret = ''
