@@ -13,6 +13,23 @@ class VenusDB:
         log.debug(f"Conectando ao database... ('{self.db_database}' on {self.db_host}, '{self.db_user}'/'{self.db_pass}')")
         self.sql=mysql.connect(host=self.db_host, user=self.db_user, password=self.db_pass, database=self.db_database)
 
+    # Aumentar/ajustar este item caso adicione novos campos no banco de dados.
+    def getSessionInfo(self, token:str):
+        c = self.sql.cursor()
+        log.debug(f"Obtendo informações para sessão do token '{token}'")
+        c.execute(f"SELECT * FROM user_config WHERE token = '{token}'")
+        session_tuple = c.fetchall()[0]
+        log.debug(f"Sessão obtida: {session_tuple}")
+        return {
+            "id": session_tuple[0],
+            "screen_name": session_tuple[1],
+            "email": session_tuple[2],
+            "superuser": bool(session_tuple[3]),
+            "token": session_tuple[4],
+            "organization_id" : session_tuple[5],
+            "instances" : None, # utilizado para display dos cards de host
+        }
+
     def validateLogin(self, username:str, password:str):
         #print(f"validateLogin: user = {username}")
         #print(f"validateLogin: pass = {password}")

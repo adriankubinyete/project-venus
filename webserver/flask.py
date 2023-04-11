@@ -44,14 +44,14 @@ class VenusWS:
                     return False
                 
             def get_orgs_for_session(self):
-                print(f"Obtendo as instâncias a serem exibidas na lista de cards, para o usuário \"{self.info['screen_name']}\".")
+                # print(f"Obtendo as instâncias a serem exibidas na lista de cards, para o usuário \"{self.info['screen_name']}\".")
                 
                 if lambda self: False if not self.info['superuser'] else True:
-                    print("-debug- É Admin.")
+                    # print("-debug- É Admin.")
                     self.info['valid_cards'] = self.venusdb.getInstancesForOrg([self.info['organization_id']], admin=True)
                     return self.info['valid_cards']
                 else:
-                    print("-debug- Não é admin.")
+                    # print("-debug- Não é admin.")
                     self.info['valid_cards'] = self.venusdb.getInstancesForOrg([self.info['organization_id']]) # Não salvo em nenhum lugar, bate diretamente no banco-de-dados sempre que faz essa requisição.
                     return self.info['valid_cards'] # Atualiza sempre que faz a requisição ao banco. Usado para definir permissões de cards ao tentar acessar via URL, um card que não estiver nessa lista retornará uma página inválida (Não pode acessar este card)
         
@@ -98,13 +98,29 @@ class VenusWS:
                 print(f"route [{f.__name__}]: superuser_required: user IS admin")
                 return f(*args, **kwargs)
             return decorated_function
+        
+        # INICIO Misc-Wrappers (Wrappers específicos para rotas)
+        
+        def can_load_card(f): # Precisa estar LOGADO
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                # if not {algo que determina que session pode usar current_card_id}:
+                    #não pode ver o card
+                # else:
+                # pode ver o card
+                return f(*args, **kwargs)
+            return decorated_function
 
+
+        # FIM Misc-Wrappers
 
         @app.route("/") 
         @login_required
         def home():
             return redirect(url_for("user_homepage"))
 
+
+        print("teste")
 
         # Página inicial do usuário
         @app.route("/homepage/")
@@ -137,7 +153,6 @@ class VenusWS:
                 user_session.validate_login(username, password) # Uso a classe de banco de dados, método validateLogin()
                 if (user_session.token != None):
                     
-                    # JOGAR UM DICIONÁRIO DO USER_CONFIG NESSA SESSION.TOKEN
                     session['token'] = user_session.token # Inicio a sessão
                     if request.form.get('lembrar'): # Se marcou para lembrar sua sessão (limite 8h = expediente)
                         session.permanent=True
@@ -147,7 +162,8 @@ class VenusWS:
                     return redirect(url_for('user_homepage'))
                 else:
                     flash("Login inválido!", "info") 
-                    return render_template('login.html')          
+                    return render_template('login.html')      
+                    
             else: # É um GET
                 if user_session.validate_session(): # Já está logado
                     return redirect(url_for("user_homepage"))
