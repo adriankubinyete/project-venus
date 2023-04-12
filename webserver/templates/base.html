@@ -1,28 +1,162 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
+    {% block head %}
+    {% endblock %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">  isso deve existir na child -->
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
     <title>{% block title %}{% endblock %}</title>
 </head>
+
 <body>
-    <h1>Venus</h1>
-    <!-- Caso tenha alguma mensagem, exibe como <p> -->
-    <!--{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-                <p>{{msg}}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %} -->
-    {% block content %}
-    {% endblock %}
-    <a href="/logout/"> Logout </a> <br>
-    <a href="/"> Home </a> <br>
-    <a href="/admin/"> Admin </a> <br>
-    <a href="/login/"> Login </a> <br>
-</body>
+    <canvas>
+    </canvas>
+    <main>
+
+        <!-- --------------- INICIO SIDE-NAV ------------------ -->
+
+        <div class="sidenav">
+
+            <!-- TOP SIDENAV -->
+            <div class="sidenav-top">
+                <a class="main-logo" href="/homepage/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
+            </div>
+            <!-- FIM TOP SIDENAV -->
+            
+            <!-- CONTEUDO SIDENAV -->
+            <div class="sidenav-content">
+                <a class="navitem" href="/#/">
+                    <ion-icon class="navitem-icon" name="chevron-forward-outline"></ion-icon>
+                    <label class="instances-item navitem-item">Instância</a>
+                </a>
+
+                <a class="navitem" href="/#/">
+                    <ion-icon class="navitem-icon" name="chevron-forward-outline"></ion-icon>
+                    <label class="placeholder-item navitem-item">placeholder</a>
+                </a>
+
+                <a class="navitem" href="/#/">
+                    <ion-icon class="navitem-icon" name="chevron-forward-outline"></ion-icon>
+                    <label class="placeholder-item navitem-item">placeholder</a>
+                </a>
+
+                <!-- CUSTOM sidenav_content -->
+                {% block body_main_content_sidenav_sidenavcontent %}
+                {% endblock %}
+                <!-- FIM CUSTOM sidenav_content -->
+
+                {% if userIsAdmin %} <!-- JINJA: userIsAdmin=user_session.userIsAdmin() -->
+                {% block body_main_content_sidenav_ADMINsidenavcontent %}
+                {% endblock %}
+                {% endif %}
+
+            </div>
+            <!-- FIM CONTEUDO SIDENAV -->
+    
+            <!-- FOOTER SIDENAV -->
+            <div class="sidenav-footer">
+                <!-- CUSTOM sidenav_footer -->
+                {% block body_main_content_sidenav_sidenavfooter %}
+                {% endblock %}
+                <!-- FIM CUSTOM sidenav_footer -->
+
+                {% if userIsAdmin %} <!-- JINJA: userIsAdmin=user_session.userIsAdmin() -->
+                <!-- CUSTOM sidenav_footer_ADMIN -->
+                {% block body_main_content_sidenav_ADMINsidenavfooter %}
+                {% endblock %}
+                <!-- FIM CUSTOM sidenav_footer_ADMIN -->
+                <a class="navitem" href="/dev/">
+                    <ion-icon class="navitem-icon" name="code-slash-outline"></ion-icon>
+                    <label class="dev-item navitem-item">Em Progresso</label>
+                </a>
+                <a class="navitem" href="/admin/">
+                    <ion-icon class="navitem-icon" name="shield-half-outline"></ion-icon>
+                    <label class="admin-item navitem-item">Painel Admin</label>
+                </a>
+                {% endif %} <!-- FIM JINJA2 userIsAdmin=user_session.userIsAdmin() -->
+                <a class="navitem" href="/logout/">
+                    <ion-icon class="navitem-icon" name="exit-outline"></ion-icon>
+                    <label class="logout-item navitem-item">Sair</label>
+                </a>
+            </div>
+            <!-- FIM FOOTER SIDENAV -->
+    
+        </div>
+        <!-- --------------- FIM SIDE-NAV ------------------ -->
+
+        <!-- --------------- INICIO CONTEÚDO ------------------ -->
+        <!-- CUSTOM MAIN -->
+        {% block body_main %}
+        {% endblock %}
+        <!-- FIM CUSTOM MAIN -->
+        <!-- --------------- FIM CONTEÚDO ------------------ -->
+
+        <!-- JINJA2 FLASH -->
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div id="flash-snack">{{msg}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <!-- FIM JINJA2 FLASH -->
+
+    </main>
+
+<!-- CUSTOM BODY -->
+{% block body %}
+{% endblock %}
+<!-- FIM CUSTOM BODY -->
+
+<!-- Background -->
 <script>
+    // Initialising the canvas
+    var canvas = document.querySelector('canvas'),
+        ctx = canvas.getContext('2d');
+    
+    // Setting the width and height of the canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Setting up the letters
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZ';
+    letters = letters.split('');
+    
+    // Setting up the columns
+    var fontSize = 10,
+        columns = canvas.width / fontSize;
+    
+    // Setting up the drops
+    var drops = [];
+    for (var i = 0; i < columns; i++) {
+      drops[i] = 1;
+    }
+    
+    // Setting up the draw function
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < drops.length; i++) {
+        var text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillStyle = '#0f0';
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        drops[i]++;
+        if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
+          drops[i] = 0;
+        }
+      }
+    }
+    
+    // Loop the animation
+    setInterval(draw, 33);
 </script>
+<!-- Icons -->
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
 </html>

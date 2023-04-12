@@ -1,112 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+| EXTEN
++------------
+| TITLE
+{% block title %}Home{% endblock %}
+| FIM TITLE
++---------------
+| HEAD
+{% block head %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
-    <title>Home</title>
-</head>
-<body>
-    <main>
-        <div class="sidenav">
+{% endblock %}
+| FIM HEAD
++------------
+| CONTEÚDO
+{% block body_main %}
+<div class="box-content">
+    <div class="card-list">
+        {% if cardlist %}
+            <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
+            {% for card in cardlist %}
+                <a class="clickable-row" href="{{ '/instance/%s'%card[0] }}">
+                    <div class="row">
+        
+                        <div class="campo campo-nome">
+                            <label class="label-nome" for="">{{card[1]}}</label>
+                        </div>
+        
+                        <div class="campo campo-host">
+                            <label class="label-host" for="">{% if card[2] %}{{card[2]}}{% else %}N/A{% endif %}</label>
+                        </div>
+        
+                        <div class="campo campo-dns">
+                            <label class="label-dns" for="">{% if card[3] %}{{card[3]}}{% else %}N/A{% endif %}</label>
+                        </div>
+        
+                        <div class="pop-icons">
+                            <a class="org-use-icon" href="/admin/">
+                                <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                            </a>
+                            <a class="org-del-icon" href="/index/">
+                                <ion-icon name="close-circle-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        {% endif %}
 
-            <div class="sidenav-top">
-
-                <a class="main-logo" href="/login/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
-
-            </div>
-            
-            <div class="sidenav-content">
-
-                <div id="instances">
-                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
-                    <a id="instances-item" class="sidenav-item" href="/#/">Instância</a>
-                </div>
-
-                <div id="instances">
-                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
-                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
-                </div>
-
-                <div id="instances">
-                    <ion-icon id="instances-icon" name="chevron-forward-outline"></ion-icon>
-                    <a id="instances-item" class="sidenav-item" href="/#/">placeholder</a>
-                </div>
-
-                <!-- dupe -->
-
-                <!-- fim dupe -->
-
-            </div>
-    
-            <div class="sidenav-footer">
-                {% if userIsAdmin %} <!-- JINJA: Usuário é administrador. -->
-                <div id="dev">
-                    <ion-icon id="dev-icon" name="code-slash-outline"></ion-icon>
-                    <a id="dev-item" class="sidenav-item" href="/dev/">Em Progresso</a>
-                </div>
-                <div id="admin">
-                    <ion-icon id="admin-icon" name="shield-half-outline"></ion-icon>
-                    <a id="admin-item" class="sidenav-item" href="/admin/">Painel Admin</a>
-                </div>
-                {% endif %} <!-- - -->
-                <div id="logout">
-                    <ion-icon id="logout-icon" name="exit-outline"></ion-icon>
-                    <a id="logout-item" class="sidenav-item" href="/logout/">Sair</a>
-                </div>
-
-            </div>
-    
-        </div>
-        <div class="conteudo">
-            <div class="card-list">
-                {% if cardlist %}
-                    <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
-                    {% for card in cardlist %}
-                        <a class="clickable-row" href="{{ '/instance/%s'%card[0] }}">
-                            <div class="row">
-                
-                                <div class="campo campo-nome">
-                                    <label class="label-nome" for="">{{card[1]}}</label>
-                                </div>
-                
-                                <div class="campo campo-host">
-                                    <label class="label-host" for="">{% if card[2] %}{{card[2]}}{% else %}N/A{% endif %}</label>
-                                </div>
-                
-                                <div class="campo campo-dns">
-                                    <label class="label-dns" for="">{% if card[3] %}{{card[3]}}{% else %}N/A{% endif %}</label>
-                                </div>
-                
-                                <div class="pop-icons">
-                                    <a class="org-use-icon" href="/admin/">
-                                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
-                                    </a>
-                                    <a class="org-del-icon" href="/index/">
-                                        <ion-icon name="close-circle-outline"></ion-icon>
-                                    </a>
-                                </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                {% endif %}
-
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet fugit harum voluptate explicabo cumque assumenda recusandae repellat pariatur ipsa velit, nulla deleniti maxime debitis nemo molestiae optio? Dolorum, voluptatibus nemo?</p>
-        </div>
-        <div id="flash-messages">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for msg in messages %}
-                        <div id="flash-snack">{{msg}}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
-    </main>
-    
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</body>
-</html>
+    </div>
+</div>
+{% endblock%}
+| FIM CONTEUDO
++-------------------

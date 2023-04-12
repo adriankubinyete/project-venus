@@ -196,8 +196,10 @@ class VenusWS:
 
 
         @app.route("/dev/")
+        @superuser_required
         def navbar():
-            return render_template("dev.html")
+            # talvez criar um custom render template onde consigo colocar informações que sempre são necessárias de se ter, no caso, userIsAdmin
+            return render_template("dev.html", userIsAdmin=user_session.userIsAdmin())
         
 
         return app
