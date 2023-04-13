@@ -22,7 +22,7 @@
 
             <!-- TOP SIDENAV -->
             <div class="sidenav-top">
-                <a class="main-logo" href="/homepage/"><img src="{{url_for('static', filename='venus-logo-full.png')}}" alt=""></a>
+                <a class="main-logo" href="/homepage/"><img src="{{url_for('static', filename='venus-white-full.png')}}" alt=""></a>
             </div>
             <!-- FIM TOP SIDENAV -->
             
@@ -87,12 +87,12 @@
         </div>
         <!-- --------------- FIM SIDE-NAV ------------------ -->
 
-        <!-- --------------- INICIO CONTEÚDO ------------------ -->
-        <!-- CUSTOM MAIN -->
-        {% block body_main %}
-        {% endblock %}
-        <!-- FIM CUSTOM MAIN -->
-        <!-- --------------- FIM CONTEÚDO ------------------ -->
+<!-- --------------- INICIO CONTEÚDO ------------------ -->
+<!-- CUSTOM MAIN -->
+    {% block body_main %}
+    {% endblock %}
+<!-- FIM CUSTOM MAIN -->
+<!-- --------------- FIM CONTEÚDO ------------------ -->
 
         <!-- JINJA2 FLASH -->
         <div id="flash-messages">
@@ -109,8 +109,8 @@
     </main>
 
 <!-- CUSTOM BODY -->
-{% block body %}
-{% endblock %}
+    {% block body %}
+    {% endblock %}
 <!-- FIM CUSTOM BODY -->
 
 <!-- Background -->

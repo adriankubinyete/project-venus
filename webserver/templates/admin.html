@@ -1,8 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Admin Panel{% endblock %}
-<head>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}">
-</head>
-{% block content %}
-<p>Olá. Você está no painel de administrador.</p>
+| EXTEN
++------------
+| TITLE
+{% block title %}
+Admin Panel
 {% endblock %}
+| FIM TITLE
++---------------
+| HEAD
+{% block head %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}">
+{% endblock %}
+| FIM HEAD
++------------
+| CONTEÚDO
+{% block body_main %}
+<div class="box-content base-box-style">
+    <p>você está no painel de administrador.</p>
+</div>
+{% endblock%}
+| FIM CONTEUDO
++-------------------

@@ -14,13 +14,17 @@
 | CONTEÚDO
 {% block body_main %}
 <div class="box-content">
-    <div class="card-list">
+    <div class="card-list box-styling">
         {% if cardlist %}
             <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
             {% for card in cardlist %}
                 <a class="clickable-row" href="{{ '/instance/%s'%card[0] }}">
                     <div class="row">
         
+                        <div class="campo campo-id">
+                            <label class="label-id" for="">{{card[0]}}</label>
+                        </div>
+
                         <div class="campo campo-nome">
                             <label class="label-nome" for="">{{card[1]}}</label>
                         </div>

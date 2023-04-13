@@ -1,480 +1,103 @@
-:root {
-    
-    --color-primary: rgb(197, 109, 248);
+@import url(base.css);
 
-    --color-secondary: #118bee;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #000;
-}
-
-canvas {
-    width: fit-content;
-    height: fit-content;
-    z-index: -1;
-    position: fixed;
-    display: block;
-}
-
-main {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    background-position: center;
-    background-size: cover;
-}
-
-.sidenav {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 14em;
-    height: 100%;
-    z-index: 9999;
-    padding: 0px 1em;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -ms-overflow-style: none; /* Esconder scroll, Edge */
-    scrollbar-width: none; /* Esconder scroll, Firefox */
+/* Conteúdo principal. Root */
+.box-content {
     display: flex;
     flex-direction: column;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: white;
 }
 
-.sidenav::-webkit-scrollbar {
-    display: none; /* Esconder scroll, Chrome*/
-}
 
-.sidenav-top {
+.box-info { /* informação que fica no top */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0px 0px 0px;
-    filter: brightness(100);
 }
 
-.sidenav-content {
-    border-top: 1px solid rgba(255, 255, 255, 0.24); /* pra separar a logo */
+.box-instance-info { /* box com o formulário */
+    background-color: none;
+}
+
+
+.inputbox-container { /*sla copiei do pura e deu certo (1/2) */
     position: relative;
-    margin: 10px 0px;
-    background-color: transparent;
-    color: white;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    gap: 1em;
 }
 
-.sidenav-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.24); /* pra separar o content */
+.inputbox { /*sla copiei do pura e deu certo (2/2) */
     position: relative;
-    margin: 0px 0px 10px 0px;
-    width: 100%;
-    margin-top: auto;
-    background-color: transparent;
-    position: relative;
-    color: white;
+    /* Para posicionar a label */
 
-}
-
-.sidenav-item {
-    transition-duration: 0.4s; /* transição quando o item perde o hover */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    display: block;
-    color: inherit;
-}
-
-.sidenav-item:hover {
-    transition-duration: 0.6s; /* transição para os efeitos do hover */
-    transform: translateX(10px);
-    border-radius: 25px;
-    border-width: 1px;
-    color: var(--color-primary); /* COR PRIMÁRIA */
-}
-
-/* SIDENAV-INSTÂNCIAS */
-#instances {
-    display: flex;
-    align-items: center;
-}
-
-#instances-icon {
+    flex-grow: 1;
     flex-shrink: 0;
-    width: 15px;
-    height: 15px;
-}
-
-#instances-item {
-    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-}
-
-#instances-item:hover {
-    transition-duration: 0.6s;
-    transform: translateX(10px);
-    color: var(--color-primary);
-}
-/* FIM SIDENAV-INSTÂNCIAS*/
-
-
-
-
-
-
-
-
-
-#logout {
-    display: flex;
-    align-items: center;
-}
-
-#logout-icon {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-}
-
-#logout-item {
-    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-}
-
-#logout-item:hover {
-    transition-duration: 0.6s;
-    transform: translateX(10px);
-    color: rgba(255, 0, 0, 0.7);
-}
-
-/* SIDENAV-FOOTER para administradores */
-
-#admin {
-    display: flex;
-    align-items: center;
-}
-
-#admin-icon {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-}
-
-#admin-item {
-    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-}
-
-#admin-item:hover {
-    transition-duration: 0.6s;
-    transform: translateX(10px);
-    color: rgba(0, 255, 55, 0.7);
-}
-
-#dev {
-    display: flex;
-    align-items: center;
-}
-
-#dev-icon {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-}
-
-#dev-item {
-    transition-duration: 0.4s; /* mudei e nao sei pra q serve */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-}
-
-#dev-item:hover {
-    transition-duration: 0.6s;
-    transform: translateX(10px);
-    color: rgba(0, 162, 255, 0.815);
-}
-
-/* fim <> SIDENAV-FOOTER para administradores*/
-
-#flash-messages #flash-snack {
-    visibility: hidden;
-    /* Hidden by default. Visible on click */
-    min-width: 250px;
-    /* Set a default minimum width */
-    margin-left: -125px;
-    /* Divide value of min-width by 2 */
-    background-color: #333;
-    /* Black background color */
-    color: #fff;
-    /* White text color */
-    text-align: center;
-    /* Centered text */
-    border-radius: 2px;
-    /* Rounded borders */
-    padding: 16px;
-    /* Padding */
-    position: fixed;
-    /* Sit on top of the screen */
-    z-index: 99999;
-    /* Add a z-index if needed */
-    left: 50%;
-    /* Center the snackbar */
-    bottom: 30px;
-    /* 30px from the bottom */
-}
-
-#flash-snack.show {
-    z-index: 99999;
-    /* Show the snackbar */
-    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
-    -webkit-animation: fadein 1s, fadeout 1s 1s;
-    animation: fadein 1s, fadeout 1s 1s;
-}
-
-@-webkit-keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-
-    to {
-        visibility: visible;
-        bottom: 30px;
-        opacity: 1;
-    }
-}
-
-@keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-
-    to {
-        visibility: visible;
-        bottom: 30px;
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadeout {
-    from {
-        visibility: visible;
-        bottom: 30px;
-        opacity: 1;
-    }
-
-    to {
-        visibility: hidden;
-        bottom: 0;
-        opacity: 0;
-    }
-}
-
-@keyframes fadeout {
-    from {
-        visibility: visible;
-        bottom: 30px;
-        opacity: 1;
-    }
-
-    to {
-        visibility: hidden;
-        bottom: 0;
-        opacity: 0;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.conteudo {
-    color: white;
-    width: 100%;
-    padding: 10px 10px 0px 10px;
-}
-
-/* CARD LIST STYLING */
-
-.clickable-row {
-    color: black;
-    margin: 1px 0px 1px 0px;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-    text-decoration: none;
-    font-size: 26px;
-    transition: 0.6s;
-}
-
-.row {
-    display: flex;
-    position: relative;
-    border-radius: 10px;
-    border: 1px solid black;
-    background: rgba(165, 209, 245, 0.199);
-    border-left: 3px solid black;
-    border-right: 3px solid black;
-    transition: 0.3s;
-}
-
-.row:hover {
-    background: rgba(0, 0, 0, 0.158);
-    border-left: 3px solid var(--color-secondary);
-    border-right: 3px solid var(--color-secondary);
-}
-
-.row:hover .clickable-row {
-    color: rgb(194, 194, 194);
-    transform: translateX(8px);
-}
-
-.campo {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 15em;
-    margin: 10px auto;
-    justify-content: center;
-    height: auto;
-    font-size: 16px;
-}
-
-.row .pop-icons {
-    display: flex;
-    position: absolute;
-    font-size: 26px;
-    right: 0px;
-    height: 100%; /* pra que centralizar né */
-    align-items: center;
-    justify-content: center;
-    transform: translateX(-75%) translateY(8%);
-
-    transition: 0.6s;
-    opacity: -1;
-}
-
-.row:hover > .pop-icons {
-    opacity: 1;
-    transform: translateX(-25%) translateY(8%);
-}
-
-
-.org-use-icon {
-    color: rgba(0, 0, 0, 0.75);
-    transition: 0.3s;
-}
-.org-use-icon:hover {
-    color: greenyellow;
-}
-
-
-.org-del-icon {
-    color: rgba(0, 0, 0, 0.75);
-    transition: 0.3s;
-}
-.org-del-icon:hover {
-    color: red;
-}
-
-/* END OF CARD LIST STYLING */
-.box-style {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 18px;
-    width: auto;
-    padding: 5px 0px 5px 10px;
-    backdrop-filter: hue-rotate(-115deg) saturate(1200%) blur(1px); /*-115 red*/
-    border: 3px solid rgba(255, 255, 255, 0.418);
-    border-radius: 15px;
-    background-color: transparent;
-}
-
-
-.top-part {
-    font-size: 18.5px; /* sim. */
-    height: 5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
-/* FORM para org */
-.org-form-box {
-    margin-top: 10px;
-}
-
-.org-form-value form {
-    font-size: 18px;
-    display: flex;
-    flex-direction: column;
+    flex-basis: 30%;
+    min-width: 20em;
+    padding: 1em;
+    border-radius: 1em;
 }
 
 .inputbox input {
-    margin: 5px 5px 5px 0px;
-    height: 25px;
-    outline: white;
-    background: rgba(255, 255, 255, 0.068);
+    width: 90%;
+    
+    /* Formato */
     border: none;
-    border-bottom: 1px solid transparent;
+    background: none;
+    outline: none;
+
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    color: var(--text-color);
+
     transition: 0.6s;
 }
 
-.inputbox input:focus {
-    border-bottom: 1px solid var(--color-secondary);
+.inputbox label {
+    position: absolute;
+
+    top: 10px;
+    left: 40px;
+
+    background: rgba(0, 0, 0, 0.9);
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: grey;
+
+    transition: 0.6s;
+
 }
 
-.org-form-value form {
-    display: grid;
+.inputbox input:hover {
+    transition: 0.3s;
+    border-color: rgb(201, 201, 201);
 }
 
-.quatro {
-    background-color: red;
+.inputbox input:hover ~ label {
+    transition: 0.3s;
+    color: rgb(201, 201, 201);
 }
 
-.dois-1 {
-    background-color: green;
+.inputbox input:focus-within {
+    transition: 0.3s;
+    border-color: var(--text-color-highlight);
+    color: var(--text-color);
 }
 
-.dois-2 {
-    background-color: blue;
+.inputbox input:focus-within ~ label {
+    transition: 0.3s;
+    color:var(--text-color-highlight);
 }
+
+
+
+/* .inputbox input:focus {
+    transition: 0.3s;
+    border-color: var(--text-color-highlight);
+} */
 
 /* FIM FORM para org*/
+
