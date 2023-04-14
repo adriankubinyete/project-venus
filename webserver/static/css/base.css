@@ -9,12 +9,79 @@
     --text-color: White;
     --text-color-highlight: var(--primary-color);
 
-    --primary-color: rgb(163, 76, 235);
-    --primary-color-transparent: rgba(var(--primary-color), 0.5);
+    --primary-color: rgb(69, 4, 122);
+    --primary-color-transparent-weak: rgba(69, 4, 122, 0.1);
+    --primary-color-transparent-strong: rgba(69, 4, 122, 0.6);
 
     --secondary-color: rgb(113, 79, 233);
-    --secondary-color-transparent: rgba(var(--secondary-color), 0.801);
+    --secondary-color-transparent-weak: rgba(113, 79, 233, 0.1);
+    --secondary-color-transparent-strong: rgba(113, 79, 233, 0.6);
+
+    --table-text-color: var(--text-color);
+    --table-text-color-highlight: var(--text-color-highlight);
+
+    --table-primary-color: var(--primary-color);
+    --table-primary-color-transparent: var(--primary-color-transparent-weak);
+
 }
+
+
+
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+
+   CSS RESET
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*CSS RESET*/
+
+
+
+
 
 * {
     margin: 0;
@@ -255,13 +322,13 @@ main {
 
     /* Alinha os itens, centralizados */
     display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 5px 10px;
 
     /* Estilização do conteúdo */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: var(--text-color);
+
+    max-width: 2160px;
 }
 
 .alt-base-box-style {
@@ -282,23 +349,100 @@ main {
     color: var(--text-color);
 }
 
-/* FIM BOILERPLATE BASE DO VENUS */
 
+/* ESTILIZAÇÃO DE TABLES */
 
-
-
-
-
-
-
-
-
-.box-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    width: 100%;
-    padding: 10px;
+/*Estilização da tabela em si*/
+.base-styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+/*Estilização de cada linha da tabela*/
+.base-styled-table thead tr {
+    background-color: var(--table-primary-color);
+    color: var(--table-text-color);
+    text-align: left;
+}
+
+/*Células de header e data tem um padding interno*/
+.base-styled-table th, .base-styled-table td {
+    padding: 12px 15px;
+}
+
+/*A primeira célula de header terá uma borda arredondada*/
+.base-styled-table thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+/*A ultima célula de header terá uma borda arredondada*/
+.base-styled-table thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+/*Há uma pequena borda entre cada linha*/
+.base-styled-table tbody tr {
+    position: relative;
+    border-bottom: 1px solid #000000;
+}
+
+/*O fundo dos itens PARES será um pouco mais escuro (para diferenciação de linhas)*/
+.base-styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f30a;
+}
+
+/*O ultimo item terá uma borda destacada a baixo (consistente com a cor da tabela)*/
+.base-styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid var(--table-primary-color);
+}
+
+/*Não utilizado...*/
+.base-styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: var(--table-text-color);
+}
+
+/*Cor de fundo ao dar hover na linha*/
+.base-styled-table tbody tr:hover {
+    background-color: var(--primary-color-transparent-weak);
+    color: var(--table-text-color-highlight);
+    text-shadow: 0px 0px 3px var(--table-text-color-highlight);
+}
+
+/*Botões que aparecem no hover (css a baixo)*/
+.base-styled-table tbody tr #table-button {
+    display: none;
+    text-decoration: none;
+    color: var(--table-text-color-highlight);
+    transition: 0.6s;
+}
+
+/*Aparecer o botão ao dar hover em uma linha*/
+.base-styled-table tbody tr:hover #table-button {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    text-decoration: none;
+    color: var(--table-text-color-highlight);
+}
+
+/*Remover os estilos padrões dos botões*/
+.base-styled-table tbody tr a { 
+    color: inherit;
+    text-decoration: inherit;
+    scale: 115%;
+}
+
+/*Alinha os itens (header e data) no exato centro da célula*/
+.base-styled-table tbody tr td, .base-styled-table thead tr th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* FIM ESTILIZAÇÃO DE TABLES*/
+
+/* FIM BOILERPLATE BASE DO VENUS */

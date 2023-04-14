@@ -1,12 +1,15 @@
 @import url(base.css);
 
 /* Conteúdo principal. Root */
+
 .box-content {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    gap: 1em;
+    padding: 10px;
     color: white;
 }
-
 
 .box-info { /* informação que fica no top */
     display: flex;
@@ -24,7 +27,7 @@
     display: flex;
     flex-flow: row wrap;
     align-items: stretch;
-    gap: 1em;
+    gap: 0.1em /* absolutamente necessário haha */
 }
 
 .inputbox { /*sla copiei do pura e deu certo (2/2) */
@@ -39,6 +42,8 @@
     border-radius: 1em;
 }
 
+/* inputbox styling */
+
 .inputbox input {
     width: 90%;
     
@@ -52,7 +57,7 @@
     border: 1px solid grey;
     color: var(--text-color);
 
-    transition: 0.6s;
+    transition: 0.4s;
 }
 
 .inputbox label {
@@ -62,7 +67,7 @@
     left: 40px;
 
     background: rgba(0, 0, 0, 0.9);
-    font-size: 12px;
+    font-size: 0.6em;
     padding-left: 5px;
     padding-right: 5px;
     color: grey;
@@ -72,7 +77,7 @@
 }
 
 .inputbox input:hover {
-    transition: 0.3s;
+    transition: 0.1s;
     border-color: rgb(201, 201, 201);
 }
 
@@ -92,12 +97,7 @@
     color:var(--text-color-highlight);
 }
 
-
-
-/* .inputbox input:focus {
-    transition: 0.3s;
-    border-color: var(--text-color-highlight);
-} */
+/* fim inputbox styling */
 
 /* FIM FORM para org*/
 

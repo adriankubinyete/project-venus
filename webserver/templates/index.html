@@ -14,9 +14,9 @@
 | CONTEÚDO
 {% block body_main %}
 <div class="box-content">
-    <div class="card-list box-styling">
-        {% if cardlist %}
-            <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
+    <div class="card-list base-box-style">
+        <!-- (int id, 'string nome_host', 'string ip_host OU None', 'string dns_host OU None') -->
+        <!-- {% if cardlist %}
             {% for card in cardlist %}
                 <a class="clickable-row" href="{{ '/instance/%s'%card[0] }}">
                     <div class="row">
@@ -48,8 +48,47 @@
                     </div>
                 </a>
             {% endfor %}
-        {% endif %}
-
+        {% endif %} -->
+        <p>teste</p>
+    </div>
+    <div class="box-table base-box-style">
+        <table class="base-styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Instancia</th>
+                    <th>Host</th>
+                    <th>DNS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if cardlist %}
+                    {% for card in cardlist %}
+                        <tr class="linha">
+                            <td>{{card[0]}}</td>
+                            <td>{{card[1]}}</td>
+                            <td>{% if card[2] %}{{card[2]}}{% else %}N/A{% endif %}</td>
+                            <td id="campo-dns">{% if card[3] %}{{card[3]}}{% else %}N/A{% endif %}</td>
+                            <td id="table-button">
+                                <div class="pop-icons">
+                                    <a class="org-use-icon" href="{{ '/instance/%s'%card[0] }}">
+                                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                                    </a>
+                                    {% if userIsAdmin %}
+                                    <a class="org-del-icon" href="/index/">
+                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>            
+                    {% endfor %}
+                {% endif %}
+                <!--Inicio Duplicata-->
+                <!--Fim Duplicata-->
+            </tbody>
+        </table>
+        
     </div>
 </div>
 {% endblock%}
