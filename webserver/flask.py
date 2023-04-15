@@ -119,9 +119,6 @@ class VenusWS:
         def home():
             return redirect(url_for("user_homepage"))
 
-
-        print("teste")
-
         # Página inicial do usuário
         @app.route("/homepage/")
         @login_required
