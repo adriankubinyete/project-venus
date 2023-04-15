@@ -81,9 +81,9 @@ class VenusDB:
         c = self.sql.cursor()
         log.debug(f"Obtendo instâncias para a organização '{org}'")
         if admin:
-            c.execute(f"SELECT id, instance, host, dns FROM organization_info")
+            c.execute(f"SELECT id, name, host, dns FROM instances")
         else:
-            c.execute(f"SELECT id, instance, host, dns FROM organization_info WHERE organization_id IN ({unpackList(org)})")
+            c.execute(f"SELECT id, name, host, dns FROM instances WHERE organization_id IN ({unpackList(org)})")
         instancias = c.fetchall()
         qt_instancias = len(instancias)
         log.debug(f"Quantidade de resultados: {qt_instancias}")
