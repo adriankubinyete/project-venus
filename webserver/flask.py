@@ -136,10 +136,13 @@ class VenusWS:
                                    userIsAdmin=user_session.userIsAdmin())
 
 
-        @app.route("/instance/<id>/", methods=['GET'])
+        @app.route("/instance/<id>/", methods=['GET', 'POST'])
         @login_required
         def instance(id):            
             host_id = id
+            print(f"ID DO HOST : {id}")
+            
+            #org_info = venusdb.
             
             return render_template("instance.html", userIsAdmin=user_session.userIsAdmin())
 

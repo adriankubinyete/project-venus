@@ -11,6 +11,12 @@
 /*Customização da tabela base*/
 .box-table {
     height: 100%;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* Esconder scroll, Edge */
+    scrollbar-width: none; /* Esconder scroll, Firefox */
+}
+.box-table::-webkit-scrollbar {
+    display: none; /* Esconder scroll, Chrome*/
 }
 
 .base-styled-table {
