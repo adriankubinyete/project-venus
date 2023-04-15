@@ -5,8 +5,19 @@ import asyncio
 
 # Teste interno
 def dev():
-    print('hello')
-
+    # vou botar isso pra funcionar depois, não é tão importante agora.
+    
+    venusdb = VenusDB(
+        db_host=lerArquivo("secret/venus_mariadb_host.txt"), 
+        db_user=lerArquivo("secret/venus_mariadb_usuario.txt"), 
+        db_pass=lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True),
+        db_database=lerArquivo("secret/venus_mariadb_database.txt"),
+        create_db=True
+        )
+    venusdb.beware_this_function_purges_the_database() # apaga o db
+    venusdb.boot_database_configuration() # cria o db do zero
+    venusdb.bulk_insert() # (deveria) insere valores falsos
+    print('done bulk insert')
 
 def main():
     log = venLog()

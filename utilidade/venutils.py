@@ -135,13 +135,22 @@ class CustomSSH(object):
 def sha1(keyword:str):
     return str(hashlib.sha1(f"{keyword}".encode('utf-8')).hexdigest())
 
-def lerArquivo(path:str, encrypt_sha1:bool=False):
-    if encrypt_sha1:
-        with open(path, 'r') as f:
-            return str(sha1(f.readline()))
+def lerArquivo(path:str, encrypt_sha1:bool=False, entire_file:bool=False):
+    if entire_file:
+        if encrypt_sha1:
+            with open(path, 'r') as f:
+                return str(sha1(f.read()))
+        else:
+            with open(path, 'r') as f:
+                return str(f.read())
     else:
-        with open(path, 'r') as f:
-            return str(f.readline())
+        if encrypt_sha1:
+            with open(path, 'r') as f:
+                return str(sha1(f.readline()))
+        else:
+            with open(path, 'r') as f:
+                return str(f.readline())
+    
         
 def venLog():
     LOG_FILE = f"utilidade/logfile-{datetime.now().strftime('%d-%m-%y')}.log"
