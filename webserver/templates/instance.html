@@ -24,50 +24,68 @@ Instances
             <div class="inputbox-container">
 
                 <div class="inputbox">
-                    <input type="text" required placeholder="ID da instância: ">
+                    <input id="host_id" type="text" readonly placeholder="ID da instância: ">
                     <label for="">ID</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="text" required placeholder="Nome da instância: TOP WEB TELECOM" value="TOP WEB TELECOM">
+                    <input id="host_name" type="text" required placeholder="Nome da instância:">
                     <label class="testelabel" for="">Nome</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="text" placeholder="Endereço IP da instância:">
+                    <input id="host_host" type="text" placeholder="Endereço IP da instância:">
                     <label class="testelabel" for="">Host</label>
                 </div>
                 
 
                 <div class="inputbox">
-                    <input type="text" placeholder="Endereço DNS da instância:">
+                    <input id="host_dns" type="text" placeholder="Endereço DNS da instância:">
                     <label class="testelabel" for="">DNS</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="text" required placeholder="Porta SSH da instância:">
+                    <input id="host_ssh_port" type="text" required placeholder="Porta SSH da instância:">
                     <label class="testelabel" for="">Port</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="text" required placeholder="Usuário SSH da instância:">
+                    <input id="host_ssh_user" type="text" required placeholder="Usuário SSH da instância:">
                     <label class="testelabel" for="">SSH User</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="password" placeholder="Senha SSH da instância:">
+                    <input id="host_ssh_password" type="password" placeholder="Senha SSH da instância:">
                     <label class="testelabel" for="">SSH Password</label>
                 </div>
 
                 <div class="inputbox">
-                    <input type="file" placeholder="Chave SSH da instância:">
+                    <input id="host_ssh_pk" type="file" placeholder="Chave SSH da instância:">
                     <label class="testelabel" for="">SSH Private Key</label>
                 </div>
 
             </div>
+            <button>Submit</button>
         </form>
 </div>
 
 {% endblock%}
 | FIM CONTEUDO
 +-------------------
+| SCRIPT BLOCK, DECLARANDO VARS DO JINJA E REFERENCIANDO instance.js
+{% block script_block %}
+<script>
+    var host = {
+        "id": "{{hostInfo['id']}}",
+        "organization_id": "{{hostInfo['organization_id']}}",
+        "name": "{{hostInfo['name']}}",
+        "host": "{{hostInfo['host']}}",
+        "dns": "{{hostInfo['dns']}}",
+        "ssh_user": "{{hostInfo['ssh_user']}}",
+        "ssh_port": "{{hostInfo['ssh_port']}}",
+        "ssh_password": "{{hostInfo['ssh_password']}}",
+        "ssh_pk": "{{hostInfo['ssh_privatekey']}}",
+    };
+</script>
+<script src="{{url_for('static', filename='js/instance.js')}}"></script>
+{% endblock %}

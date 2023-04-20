@@ -7,7 +7,7 @@
 +---------------
 | HEAD
 {% block head %}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/instances.css')}}">
 {% endblock %}
 | FIM HEAD
 +------------
@@ -31,17 +31,17 @@
                 {% if cardlist %}
                     {% for card in cardlist %}
                         <tr class="linha">
-                            <td>{{card[0]}}</td>
-                            <td>{{card[1]}}</td>
+                            <td id="testejs">{{card[0]}}</td>
+                            <td id="nomeInstancia">{{card[1]}}</td>
                             <td>{% if card[2] %}{{card[2]}}{% else %}N/A{% endif %}</td>
                             <td id="campo-dns">{% if card[3] %}{{card[3]}}{% else %}N/A{% endif %}</td>
                             <td id="table-button">
                                 <div class="pop-icons">
-                                    <a class="org-use-icon" href="{{ '/instance/%s'%card[0] }}">
+                                    <a class="org-use-icon" href="{{ '/instances/%s'%card[0] }}">
                                         <ion-icon name="arrow-forward-circle-outline"></ion-icon>
                                     </a>
                                     {% if userIsAdmin %}
-                                    <a class="org-del-icon" href="/index/">
+                                    <a class="org-del-icon" href="/home/">
                                         <ion-icon name="close-circle-outline"></ion-icon>
                                     </a>
                                     {% endif %}

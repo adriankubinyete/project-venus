@@ -5,19 +5,7 @@ import asyncio
 
 # Teste interno
 def dev():
-    # vou botar isso pra funcionar depois, não é tão importante agora.
-    
-    venusdb = VenusDB(
-        db_host=lerArquivo("secret/venus_mariadb_host.txt"), 
-        db_user=lerArquivo("secret/venus_mariadb_usuario.txt"), 
-        db_pass=lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True),
-        db_database=lerArquivo("secret/venus_mariadb_database.txt"),
-        create_db=True
-        )
-    venusdb.beware_this_function_purges_the_database() # apaga o db
-    venusdb.boot_database_configuration() # cria o db do zero
-    venusdb.bulk_insert() # (deveria) insere valores falsos
-    print('done bulk insert')
+  pass
 
 def main():
     log = venLog()
@@ -27,11 +15,16 @@ def main():
         db_host=lerArquivo("secret/venus_mariadb_host.txt"), 
         db_user=lerArquivo("secret/venus_mariadb_usuario.txt"), 
         db_pass=lerArquivo("secret/venus_mariadb_senha.txt", encrypt_sha1=True),
-        db_database=lerArquivo("secret/venus_mariadb_database.txt")
+        db_database='venus',
+        noselect=True
         )
+    
+    venusdb.purge_database() # deixar isso descomentado somente em carater de desenvolvimento
+    venusdb.boot_database_configuration() # re-crio toda estrutura de tabelas
+    venusdb.bulk_insert() # insiro algumas informações de teste pra gerar cards
 
     venusws = VenusWS(venusdb)
-    venusws.app.run(host='0.0.0.0', debug=True)
+    venusws.app.run(host='0.0.0.0', debug=True) # Por algum motivo que não tá no meu conhecimento, se "debug=True", ele vai rodar as linhas de cima 2x, causando IntegrityError no insert, se não tiverem comentadas (purge, boot e bulk_insert) 🤡
         
 if __name__ == "__main__":
     main()

@@ -22,13 +22,13 @@
 
             <!-- TOP SIDENAV -->
             <div class="sidenav-top">
-                <a class="main-logo" href="/homepage/"><img src="{{url_for('static', filename='venus-white-full.png')}}" alt=""></a>
+                <a class="main-logo" href="/home/"><img src="{{url_for('static', filename='venus-white-full.png')}}" alt=""></a>
             </div>
             <!-- FIM TOP SIDENAV -->
             
             <!-- CONTEUDO SIDENAV -->
             <div class="sidenav-content">
-                <a class="navitem" href="/#/">
+                <a class="navitem" href="/instances/">
                     <ion-icon class="navitem-icon" name="chevron-forward-outline"></ion-icon>
                     <label class="instances-item navitem-item">Instâncias</a>
                 </a>
@@ -159,4 +159,6 @@
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
+{% block script_block %}
+{% endblock %}
 </html>

@@ -153,7 +153,8 @@ def lerArquivo(path:str, encrypt_sha1:bool=False, entire_file:bool=False):
     
         
 def venLog():
-    LOG_FILE = f"utilidade/logfile-{datetime.now().strftime('%d-%m-%y')}.log"
+    #LOG_FILE = f"utilidade/logfile-{datetime.now().strftime('%d-%m-%y')}.log" # Windows
+    LOG_FILE = fr"\\wsl.localhost\Ubuntu\etc\testing\logfile-{datetime.now().strftime('%d-%m-%y')}.log" # WSL Ubuntu
     logging.basicConfig(
         filename=LOG_FILE,
         level=logging.DEBUG,
