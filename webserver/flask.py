@@ -169,7 +169,20 @@ class VenusWS:
                     flash('Você não tem permissão para acessar esta página!')
                     return redirect(url_for("instance_list")) 
                 
-                print("Ainda não implementei nada aqui.")
+                host_name = request.form['host_name']
+                host_host = request.form['host_host']
+                host_dns = request.form['host_dns']
+                host_ssh_port = request.form['host_ssh_port']
+                host_ssh_user = request.form['host_ssh_user']
+                host_ssh_password = request.form['host_ssh_password']
+                
+                print(f'''name = {host_name}
+host = {host_host}
+dns = {host_dns}
+ssh_port = {host_ssh_port}
+ssh_user = {host_ssh_user}
+ssh_password = {host_ssh_password}''')
+                
                 return "<h1>Olá, mundo...</h1>"
             
             else: # GET --------------------------------------------------------------

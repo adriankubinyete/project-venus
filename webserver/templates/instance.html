@@ -29,43 +29,42 @@ Instances
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_name" type="text" required placeholder="Nome da instância:">
+                    <input id="host_name" name="host_name" type="text" maxlength="255" required placeholder="Nome da instância:">
                     <label class="testelabel" for="">Nome</label>
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_host" type="text" placeholder="Endereço IP da instância:">
+                    <input id="host_host" name="host_host" type="text" maxlength="255" placeholder="Endereço IP da instância:">
                     <label class="testelabel" for="">Host</label>
                 </div>
                 
-
                 <div class="inputbox">
-                    <input id="host_dns" type="text" placeholder="Endereço DNS da instância:">
+                    <input id="host_dns" name="host_dns" type="text" maxlength="255" placeholder="Endereço DNS da instância:">
                     <label class="testelabel" for="">DNS</label>
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_ssh_port" type="text" required placeholder="Porta SSH da instância:">
+                    <input id="host_ssh_port" name="host_ssh_port" type="text" maxlength="255" required placeholder="Porta SSH da instância:">
                     <label class="testelabel" for="">Port</label>
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_ssh_user" type="text" required placeholder="Usuário SSH da instância:">
+                    <input id="host_ssh_user" name="host_ssh_user" type="text" maxlength="255" required placeholder="Usuário SSH da instância:">
                     <label class="testelabel" for="">SSH User</label>
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_ssh_password" type="password" placeholder="Senha SSH da instância:">
+                    <input id="host_ssh_password" name="host_ssh_password" type="password" maxlength="255" placeholder="Senha SSH da instância:">
                     <label class="testelabel" for="">SSH Password</label>
                 </div>
 
                 <div class="inputbox">
-                    <input id="host_ssh_pk" type="file" placeholder="Chave SSH da instância:">
+                    <input id="host_ssh_pk" name="host_ssh_pk" type="file" placeholder="Chave SSH da instância:">
                     <label class="testelabel" for="">SSH Private Key</label>
                 </div>
 
             </div>
-            <button>Submit</button>
+            <button>Atualizar</button>
         </form>
 </div>
 
