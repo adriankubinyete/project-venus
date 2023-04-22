@@ -15,7 +15,7 @@ class VenusDB:
         self.db_empresas = 'empresas'
         self.db_instancias = 'hosts'
         
-        log.debug(f"Conectando ao MYSQL... ('{self.db_database}' on {self.db_host}, '{self.db_user}'/'{self.db_pass}')")
+        log.debug(f"Conectando ao MYSQL... (DATABASE: '{self.db_database}' | IP: {self.db_host} | USER: '{self.db_user}' | PASS: '{self.db_pass}')")
         
         if noselect:
             log.debug(f"Autenticação sem banco-de-dados definido.")

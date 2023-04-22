@@ -75,44 +75,31 @@ class VenusWS:
                 print(str(message))
             return dict(mdebug=print_in_console)
         
-        def check_not_logged(destino):
+        # misc functions para wrappers
+        def redirect_if_not_logged(destino:str):
             if not user_session.validate_session(): # Não está logado
                     flash("Você precisa estar logado para acessar esta página!", "info")
                     return redirect(url_for(destino))
-                
-        def check_not_superuser(destino:str):
+        def redirect_if_not_superuser(destino:str):
             if not user_session.info['superuser']: # Não é SUPERUSER
                     flash("Você não tem permissão para acessar esta página.", "info")
                     return redirect(url_for(destino))
             
+        # wrappers gerais
         def login_required(f): # PRECISA ESTAR LOGADO
             @wraps(f)
             def decorated_function(*args, **kwargs):
-                check_not_logged('login') # Se não estiver logado, vai pra 'login'
+                redirect_if_not_logged('login') # Se não estiver logado, vai pra 'login'
                 return f(*args, **kwargs)
             return decorated_function
         
         def superuser_required(f): # PRECISA ESTAR LOGADO E SER SUPERUSER
             @wraps(f)
             def decorated_function(*args, **kwargs):
-                check_not_logged('login') # Se não estiver logado, vai pra 'login'
-                check_not_superuser('instance_list') # Se não estiver logado, vai pra 'instance_list'
+                redirect_if_not_logged('login') # Se não estiver logado, vai pra 'login'
+                redirect_if_not_superuser('instance_list') # Se não estiver logado, vai pra 'instance_list'
                 return f(*args, **kwargs) # Está logado, e é um SUPERUSER.
             return decorated_function
-        
-        # INICIO Misc-Wrappers (Wrappers específicos para rotas)
-        
-        def can_load_card(f): # Precisa estar LOGADO
-            @wraps(f)
-            def decorated_function(*args, **kwargs):
-                # if not {algo que determina que session pode usar current_card_id}:
-                    #não pode ver o card
-                # else:
-                # pode ver o card
-                return f(*args, **kwargs)
-            return decorated_function
-
-        # FIM Misc-Wrappers
 
         # Homepage do usuário da sessão. Ainda não implementado.
         @app.route("/home/") 
@@ -131,12 +118,12 @@ class VenusWS:
 
 
         # Página para consultar instância X
-        @app.route("/instances/<id>/", methods=['GET', 'POST'])
+        @app.route("/instances/<h_id>/", methods=['GET', 'POST'])
         @login_required
-        def instances(id:int):
+        def instances(h_id:int):
             
             def can_load_instance():
-                instance_id = id
+                instance_id = h_id
                 valid_ids=[]
 
                 if 'valid_cards' in user_session.info: # Tem cards.
@@ -183,6 +170,8 @@ ssh_port = {host_ssh_port}
 ssh_user = {host_ssh_user}
 ssh_password = {host_ssh_password}''')
                 
+                r = user_session.update_instance('id') # <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                
                 return "<h1>Olá, mundo...</h1>"
             
             else: # GET --------------------------------------------------------------
@@ -191,7 +180,7 @@ ssh_password = {host_ssh_password}''')
                     flash('Você não tem permissão para acessar esta página!')
                     return redirect(url_for("instance_list")) 
                     
-                return render_template("instance.html", userIsAdmin=user_session.userIsAdmin(), hostInfo=user_session.venusdb.getInstance(id))           
+                return render_template("instance.html", userIsAdmin=user_session.userIsAdmin(), hostInfo=user_session.venusdb.getInstance(h_id))           
 
 
         # Página para Login.
