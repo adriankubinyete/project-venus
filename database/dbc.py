@@ -130,9 +130,7 @@ class VenusDB:
                 return f"{field}"
 
         c = self.sql.cursor()
-
         c.execute(f"UPDATE {self.db_instancias} SET name = %s, host = %s, dns = %s, ssh_port = %s, ssh_user = %s, ssh_password = %s WHERE id = %s LIMIT 1", (fmt_sql(host_name), fmt_sql(host_host), fmt_sql(host_dns), fmt_sql(host_ssh_port), fmt_sql(host_ssh_user), fmt_sql(host_ssh_password), host_id)) # prevenindo SQL INJECTIONS
-
         self.sql.commit()
 
 
@@ -144,46 +142,40 @@ class VenusDB:
     def purge_database(self):
         log.warning(f"############ DELETANDO BANCO DE DADOS \"{self.db_database}\" ############")
         c = self.sql.cursor()
-        query = f"DROP DATABASE IF EXISTS {self.db_database}"
-        # drop database
-        c.execute(query)
+        c.execute(f"DROP DATABASE IF EXISTS {self.db_database}")
         log.warning(f"############ BANCO DE DADOS \"{self.db_database}\" DELETADO! ############")
         
     def boot_database_configuration(self):
         # funções de boot, criação
         def cdb_database(): # Criar DB
             c = self.sql.cursor()
-            query = f"CREATE DATABASE IF NOT EXISTS {self.db_database} CHARACTER SET utf8mb4"
-            c.execute(query)
-            query2 = f"USE {self.db_database}"
-            c.execute(query2)
+            c.execute(f"CREATE DATABASE IF NOT EXISTS {self.db_database} CHARACTER SET utf8mb4")
+            c.execute(f"USE {self.db_database}")
             self.sql.commit()
             log.debug(f'Criando Database \"{self.db_database}\" > DONE')
 
         def ctable_empresas(): # Criar Empresas (Grupo de Hosts)
             c = self.sql.cursor()
-            query = f"""CREATE TABLE IF NOT EXISTS {self.db_empresas} (
+            c.execute(f"""CREATE TABLE IF NOT EXISTS {self.db_empresas} (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
-    );"""
-            c.execute(query)
+    );""")
             log.debug(f'Criando Table \"{self.db_empresas}\" > DONE')
 
         def ctable_usuarios(): # Criar Usuários
             c = self.sql.cursor()
-            query = f"""CREATE TABLE IF NOT EXISTS {self.db_usuarios} (
+            c.execute(f"""CREATE TABLE IF NOT EXISTS {self.db_usuarios} (
     id INT AUTO_INCREMENT NOT NULL,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     token VARCHAR(255) UNIQUE NOT NULL,
     CONSTRAINT PRIMARY KEY (id)
-    );"""
-            c.execute(query)
+    );""")
             log.debug(f'Criando Table \"{self.db_usuarios}\" > DONE')
 
         def ctable_conf_usuarios(): # Criar Informações de Usuários
             c = self.sql.cursor()
-            query = f"""CREATE TABLE IF NOT EXISTS {self.db_usuarios_info} (
+            c.execute(f"""CREATE TABLE IF NOT EXISTS {self.db_usuarios_info} (
     id INT AUTO_INCREMENT NOT NULL,
     organization_id INT NULL,
     superuser INT DEFAULT 0,
@@ -193,13 +185,12 @@ class VenusDB:
     CONSTRAINT PRIMARY KEY (id),
     CONSTRAINT FOREIGN KEY (organization_id) REFERENCES {self.db_empresas}(id),
     CONSTRAINT FOREIGN KEY (token) REFERENCES {self.db_usuarios}(token)
-    );"""
-            c.execute(query)
+    );""")
             log.debug(f'Criando Table \"{self.db_usuarios_info}\" > DONE')
 
         def ctable_instancias(): # Criar Instâncias (Hosts)
             c = self.sql.cursor()
-            query = f"""CREATE TABLE IF NOT EXISTS {self.db_instancias} (
+            c.execute(f"""CREATE TABLE IF NOT EXISTS {self.db_instancias} (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     organization_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -210,8 +201,7 @@ class VenusDB:
     ssh_password VARCHAR(255) NULL,
     ssh_privatekey VARCHAR(255) NULL,
     CONSTRAINT FOREIGN KEY (organization_id) REFERENCES {self.db_empresas}(id)
-    );"""
-            c.execute(query)
+    );""")
             log.debug(f'Criando Table \"{self.db_instancias}\" > DONE')
             
         def insert_admin():

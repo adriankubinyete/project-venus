@@ -117,12 +117,12 @@ class VenusWS:
 
 
         # Página para consultar instância X
-        @app.route("/instances/<h_id>/", methods=['GET', 'POST'])
+        @app.route("/instances/<host_id>/", methods=['GET', 'POST'])
         @login_required
-        def instances(h_id:int):
+        def instances(host_id:int):
             
             def can_load_instance():
-                instance_id = h_id
+                instance_id = host_id
                 valid_ids=[]
 
                 if 'valid_cards' in user_session.info: # Tem cards.
@@ -169,16 +169,17 @@ ssh_port = {host_ssh_port}
 ssh_user = {host_ssh_user}
 ssh_password = {host_ssh_password}''')
                 
-                r = user_session.venusdb.updateInstance(
-                    host_id=h_id,
-                    host_name=host_name,
-                    host_host=host_host,
-                    host_dns=host_dns,
-                    host_ssh_port=host_ssh_port,
-                    host_ssh_user=host_ssh_user,
-                    host_ssh_password=host_ssh_password) # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                # Envia o comando para atualizar as informações da instância
+                user_session.venusdb.updateInstance(
+                host_id=host_id,
+                host_name=host_name,
+                host_host=host_host,
+                host_dns=host_dns,
+                host_ssh_port=host_ssh_port,
+                host_ssh_user=host_ssh_user,
+                host_ssh_password=host_ssh_password) # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 
-                flash(f"Informações da empresa \"{h_id}\" atualizadas!")
+                flash(f"Informações da empresa \"{host_id}\" atualizadas!")
                 return redirect(request.url) # Entra na mesma página
             
             else: # GET --------------------------------------------------------------
@@ -187,7 +188,7 @@ ssh_password = {host_ssh_password}''')
                     flash('Você não tem permissão para acessar esta página!')
                     return redirect(url_for("instance_list")) 
                     
-                return render_template("instance.html", userIsAdmin=user_session.userIsAdmin(), hostInfo=user_session.venusdb.getInstance(h_id))           
+                return render_template("instance.html", userIsAdmin=user_session.userIsAdmin(), hostInfo=user_session.venusdb.getInstance(host_id))           
 
 
         # Página para Login.
