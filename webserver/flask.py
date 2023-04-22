@@ -8,11 +8,10 @@ log = venLog()
 class VenusWS:
     def __init__(self, database):
 
-        log.info(f"Setando o cliente DB")
         self.venusdb = database # quando quero usar os métodos de VenusDB, ações / querys automaticas
         self.database = database.sql # conexão mysql, para fazer ações / querys manuais
         log.info(f"Iniciando FLASK APP")
-        print('iniciando flask app')
+        print('Iniciando FLASK APP')
         self.app = self.start_flask()
     
     def start_flask(self):
@@ -170,9 +169,17 @@ ssh_port = {host_ssh_port}
 ssh_user = {host_ssh_user}
 ssh_password = {host_ssh_password}''')
                 
-                r = user_session.update_instance('id') # <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                r = user_session.venusdb.updateInstance(
+                    host_id=h_id,
+                    host_name=host_name,
+                    host_host=host_host,
+                    host_dns=host_dns,
+                    host_ssh_port=host_ssh_port,
+                    host_ssh_user=host_ssh_user,
+                    host_ssh_password=host_ssh_password) # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 
-                return "<h1>Olá, mundo...</h1>"
+                flash(f"Informações da empresa \"{h_id}\" atualizadas!")
+                return redirect(request.url) # Entra na mesma página
             
             else: # GET --------------------------------------------------------------
             

@@ -120,8 +120,20 @@ class VenusDB:
             "ssh_privatekey": None,
         }
 
+    def updateInstance(self, host_id:int, host_name:str, host_host:str, host_dns:str, host_ssh_port:int, host_ssh_user:str, host_ssh_password:str):
+        def fmt_sql(field):
+            if field == None:
+                return 'NULL'
+            elif not field:
+                return 'NULL'
+            else:
+                return f"{field}"
 
+        c = self.sql.cursor()
 
+        c.execute(f"UPDATE {self.db_instancias} SET name = %s, host = %s, dns = %s, ssh_port = %s, ssh_user = %s, ssh_password = %s WHERE id = %s LIMIT 1", (fmt_sql(host_name), fmt_sql(host_host), fmt_sql(host_dns), fmt_sql(host_ssh_port), fmt_sql(host_ssh_user), fmt_sql(host_ssh_password), host_id)) # prevenindo SQL INJECTIONS
+
+        self.sql.commit()
 
 
 
